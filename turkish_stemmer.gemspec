@@ -6,11 +6,11 @@ require 'turkish_stemmer/version'
 Gem::Specification.new do |spec|
   spec.name          = "turkish_stemmer"
   spec.version       = TurkishStemmer::VERSION
-  spec.authors       = ["Giorgos Tsiftsis"]
-  spec.email         = ["giorgos.tsiftsis@skroutz.gr"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.authors       = ["Tasos Stathopoulos", "Giorgos Tsiftsis"]
+  spec.email         = ["stathopa@skroutz.gr", "giorgos.tsiftsis@skroutz.gr"]
+  spec.summary       = %q{A simple turkish stemmer}
+  spec.description   = %q{A simple turkish stemmer}
+  spec.homepage      = "https://gitlab.skroutz.gr/turkish_stemmer"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
