@@ -175,7 +175,15 @@ describe TurkishStemmer do
       end
     end
 
-    context "when we pass suffixes and states" do
+    context "when we pass suffixes and simple states", :focus do
+      it "strips suffixes correctly" do
+        expect(
+          described_class.
+            regex_suffix_removal("çocuğuymuşum",
+                                 states: described_class::NOMINAL_VERB_STATES,
+                                 suffixes: described_class::NOMINAL_VERB_SUFFIXES)).
+        to eq %w{ çocuğuy }
+      end
     end
   end
 
@@ -219,7 +227,18 @@ describe TurkishStemmer do
         context "and new word has valid last 'y' symbol" do
           it "stems correctly and increases the suffix" do
             expect(
-              described_class)
+              described_class.
+                partial_stem("loyum", suffix)).
+            to eq({ stem: true, word: "lo", suffix_applied: "yum" })
+          end
+        end
+
+        context "and new word does not have valid last 'y' symbol" do
+          it "does not stem the word" do
+            expect(
+              described_class.
+                partial_stem("lotyum", suffix)).
+            to eq({ stem: false, word: "lotyum", suffix_applied: nil })
           end
         end
       end

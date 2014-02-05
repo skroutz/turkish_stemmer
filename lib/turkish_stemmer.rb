@@ -1,4 +1,5 @@
 require "turkish_stemmer/version"
+require "pry"
 
 module TurkishStemmer
   extend self
@@ -122,23 +123,107 @@ module TurkishStemmer
 
   NOMINAL_VERB_STATES =
   {
-    0 =>
+    :a =>
     {
       transitions:
       [
-        { suffix: 1,  state: 1 },
-        { suffix: 2,  state: 1 },
-        { suffix: 3,  state: 1 },
-        { suffix: 4,  state: 1 },
-        { suffix: 5,  state: 2 },
-        { suffix: 12, state: 3 },
-        { suffix: 13, state: 3 },
-        { suffix: 14, state: 3 },
-        { suffix: 15, state: 3 },
+        { suffix: 1,  state: :b },
+        { suffix: 2,  state: :b },
+        { suffix: 3,  state: :b },
+        { suffix: 4,  state: :b },
+        { suffix: 5,  state: :c },
+        { suffix: 6,  state: :d },
+        { suffix: 7,  state: :d },
+        { suffix: 8,  state: :d },
+        { suffix: 9,  state: :d },
+        { suffix: 10,  state: :e },
+        { suffix: 12,  state: :f },
+        { suffix: 13,  state: :f },
+        { suffix: 14,  state: :f },
+        { suffix: 15,  state: :f },
+        { suffix: 11,  state: :h }
+
       ],
 
       final_state: false
-     }
+     },
+
+    :b =>
+    {
+      transitions:
+      [
+        { suffix: 14,  state: :f }
+      ],
+      final_state: true
+    },
+
+    :c =>
+    {
+      transitions:
+      [
+        { suffix: 10,  state: :f },
+        { suffix: 12,  state: :f },
+        { suffix: 13,  state: :f },
+        { suffix: 14,  state: :f }
+      ],
+      final_state: true
+     },
+
+    :d =>
+    {
+      transitions:
+      [
+        { suffix: 12,  state: :f },
+        { suffix: 13,  state: :f }
+      ],
+      final_state: false
+     },
+
+    :e =>
+      {
+        transitions:
+        [
+          { suffix: 1,  state: :g },
+          { suffix: 2,  state: :g },
+          { suffix: 3,  state: :g },
+          { suffix: 4,  state: :g },
+          { suffix: 5,  state: :g },
+
+          { suffix: 14,  state: :f }
+        ],
+        final_state: true
+       },
+
+    :f =>
+      {
+        transitions:
+        [
+        ],
+        final_state: true
+       },
+
+    :g =>
+      {
+        transitions:
+        [
+          { suffix: 14,  state: :f },
+        ],
+        final_state: false
+       },
+
+      :h =>
+      {
+        transitions:
+        [
+          { suffix: 14,  state: :f },
+            { suffix: 1,  state: :g },
+          { suffix: 2,  state: :g },
+          { suffix: 3,  state: :g },
+          { suffix: 4,  state: :g },
+          { suffix: 5,  state: :g },
+        ],
+        final_state: false
+       }
   }
 
 
@@ -147,7 +232,7 @@ module TurkishStemmer
     1 =>
     {
       name: "-(y)Um",
-      regex: "um",
+      regex: "ım|im|um|üm",
       extra_y_consonant: true,
       check_harmony: true
     },
@@ -155,6 +240,7 @@ module TurkishStemmer
     2 =>
     {
       name: "-sUn",
+      regex: "sın|sin|sun|sün",
       extra_y_consonant: false,
       check_harmony: true
     },
@@ -162,6 +248,7 @@ module TurkishStemmer
     3 =>
     {
       name: "-(y)Uz",
+      regex: "ız|iz|uz|üz",
       extra_y_consonant: true,
       check_harmony: true
     },
@@ -169,15 +256,97 @@ module TurkishStemmer
     4 =>
     {
       name: "-sUnUz",
-      extra_y_consonant: true,
+      regex: "sınız|siniz|sunuz|sünüz",
+      extra_y_consonant: false,
       check_harmony: true
     },
 
     5 =>
     {
       name: "-lAr",
+      regex: "lar|ler",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    6 =>
+    {
+      name: "-m",
+      regex: "m",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    7 =>
+    {
+      name: "-n",
+      regex: "n",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    8 =>
+    {
+      name: "-k",
+      regex: "k",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    9 =>
+    {
+      name: "-nUz",
+      regex: "nız|niz|nuz|nüz",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    10 =>
+    {
+      name: "-DUr",
+      regex: "tır|tir|tur|tür|dır|dir|dur|dür",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    11 =>
+    {
+      name: "-cAsInA",
+      regex: "casına|casine",
+      extra_y_consonant: false,
+      check_harmony: true
+    },
+
+    12 =>
+    {
+      name: "-(y)DU",
+      regex: "dı|di|du|dü|tı|ti|tu|tü",
       extra_y_consonant: true,
-      check_harmony: false
+      check_harmony: true
+    },
+
+    13 =>
+    {
+      name: "-(y)sA",
+      regex: "sa|se",
+      extra_y_consonant: true,
+      check_harmony: true
+    },
+
+    14 =>
+    {
+      name: "-(y)mUş",
+      regex: "muş|miş|müş|mı",
+      extra_y_consonant: true,
+      check_harmony: true
+    },
+
+    15 =>
+    {
+      name: "-(y)ken",
+      regex: "ken",
+      extra_y_consonant: true,
+      check_harmony: true
     }
   }
 
@@ -199,27 +368,64 @@ module TurkishStemmer
 
     stems    = []
     # Init first state pending transitions
-    pendings = states[0][:transitions].map do |transition|
+    pendings = states[:a][:transitions].map do |transition|
                  {
                    suffix: transition[:suffix],
                    to_state: transition[:state],
-                   from_state: 0,
-                   word: word
+                   from_state: :a,
+                   word: word,
+                   rollback: nil
                  }
                end
 
     while !pendings.empty? do
-      info = pendings.pop
-      word = info[:word]
-      suffix = suffixes[info[:suffix]]
-      regex  = suffix[:regex]
+      info    = pendings.pop
+      word    = info[:word]
+      suffix  = suffixes[info[:suffix]]
+      to_state = states[info[:to_state]]
+      answer    = partial_stem(word, suffix)
 
-      if word.match(/{regex}$/)
-        new_word = stem_for(word, suffix)
+      # binding.pry
+
+      if answer[:stem] == true
+        puts answer.to_s
+        if to_state[:final_state] == true
+          if to_state[:transitions].empty?
+            # We are sure that this is a 100% final state
+            stems.push answer[:word]
+          else
+            to_state[:transitions].each do |transition|
+              pendings <<
+                {
+                  suffix: transition[:suffix],
+                  to_state: transition[:state],
+                  from_state: info[:to_state],
+                  word: answer[:word],
+                  rollback: answer[:word]
+                }
+            end
+          end
+        else
+          to_state[:transitions].each do |transition|
+            pendings <<
+              {
+                suffix: transition[:suffix],
+                to_state: transition[:state],
+                from_state: info[:to_state],
+                word: answer[:word],
+                rollback: info[:rollback]
+              }
+          end
+        end
+      else
+        if info[:rollback]
+          stems.push info[:rollback]
+        end
       end
     end
 
-    return [word] if pendings.empty?
+    return [word] if pendings.empty? && stems.empty?
+    stems
   end
 
   # Given a suffix it stems a word according to Turkish orthographic rules
@@ -232,17 +438,30 @@ module TurkishStemmer
            !suffix[:check_harmony]
     suffix_applied = suffix[:regex]
 
-    new_word = if stem
-                 word.gsub(/#{suffix_applied}$/, '')
+    new_word = if stem && word.match(/(#{suffix_applied})$/)
+                 word.gsub(/(#{suffix_applied})$/, '')
                else
+                 stem = false
                  suffix_applied = nil
                  word
                end
-    if suffix[:extra_y_consonant] && "yY".include?(new_word.chars.last)
-      if "yY".include?(new_word.chars.last) && valid_last_y_consonant(word)
+
+    if !suffix_applied.nil? && suffix[:extra_y_consonant] && "yY".include?(new_word.chars.last)
+      if valid_last_y_consonant?(new_word)
+        new_word = new_word.chop
+        suffix_applied = 'y' + suffix_applied
+      else
+        new_word = word
+        suffix_applied = nil
+        stem = false
       end
     end
 
     { stem: stem, word: new_word, suffix_applied: suffix_applied }
+  end
+
+  def check(word)
+    regex_suffix_removal(word, states: NOMINAL_VERB_STATES,
+      suffixes: NOMINAL_VERB_SUFFIXES)
   end
 end
