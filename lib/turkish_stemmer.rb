@@ -414,7 +414,7 @@ module TurkishStemmer
     rollback = options[:rollback]
     rollback ||= state[:final_state] ? word : nil
 
-    response = state[:transitions].map do |transition|
+    state[:transitions].map do |transition|
       {
         suffix: transition[:suffix],
         to_state: transition[:state],
@@ -423,8 +423,6 @@ module TurkishStemmer
         rollback: rollback
       }
     end
-
-    response
   end
 
   # Given a suffix it stems a word according to Turkish orthographic rules
