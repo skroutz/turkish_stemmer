@@ -197,6 +197,33 @@ describe TurkishStemmer do
       }
     end
 
+    context "when suffix has harmony check on" do
+      before do
+        suffix[:regex] = "dan"
+      end
+
+      it "does not stem a word that does not obey harmony rules" do
+        expect(
+          described_class.
+            mark_stem("kürdan", suffix)).
+        to eq({ stem: false, word: "kürdan", suffix_applied: nil })
+      end
+    end
+
+    context "when suffix has harmony check off" do
+      before do
+        suffix[:regex] = "dan"
+        suffix[:check_harmony] = false
+      end
+
+      it "stems a word that does not obey harmony rules" do
+        expect(
+          described_class.
+            mark_stem("kürdan", suffix)).
+        to eq({ stem: true, word: "kür", suffix_applied: "dan" })
+      end
+    end
+
     context "when word matches suffix" do
       it "partially stems a word" do
         expect(
@@ -205,18 +232,6 @@ describe TurkishStemmer do
         to eq({ stem: true, word: "Türkiye", suffix_applied: "dir" })
       end
 
-      context "when suffix has harmony check on" do
-        before do
-          suffix[:regex] = "dan"
-        end
-
-        it "does not stem a word that does not obey harmony rules" do
-          expect(
-            described_class.
-              partial_stem("kürdan", suffix)).
-          to eq({ stem: false, word: "kürdan", suffix_applied: nil })
-        end
-      end
 
       context "when suffix has (y) as optional letter" do
         before do
