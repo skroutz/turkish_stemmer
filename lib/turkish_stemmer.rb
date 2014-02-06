@@ -361,7 +361,7 @@ module TurkishStemmer
   # @option options [Hash] :states The states and valid transitions
   # @option options [Hash] :suffixes The suffixes with their rules
   # @return [Array] all possible stem versions
-  def regex_suffix_removal(word, options = {})
+  def affix_morphological_stripper(word, options = {})
     states   = options[:states]   || {}
     suffixes = options[:suffixes] || {}
 

@@ -158,12 +158,13 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".regex_suffix_removal" do
+  describe ".affix_morphological_stripper", :focus do
     context "when states are empty" do
       it "returns the word" do
         expect(
           described_class.
-            regex_suffix_removal("kapıdır", suffixes: :test)).to eq(["kapıdır"])
+            affix_morphological_stripper("kapıdır", suffixes: :test)).
+        to eq(["kapıdır"])
       end
     end
 
@@ -171,7 +172,8 @@ describe TurkishStemmer do
       it "return the word" do
         expect(
           described_class.
-            regex_suffix_removal("kapıdır", states: :test)).to eq(["kapıdır"])
+            affix_morphological_stripper("kapıdır", states: :test)).
+        to eq(["kapıdır"])
       end
     end
 
@@ -179,10 +181,10 @@ describe TurkishStemmer do
       it "strips suffixes correctly" do
         expect(
           described_class.
-            regex_suffix_removal("çocuğuymuşum",
+            affix_morphological_stripper("çocuğuymuşum",
                                  states: described_class::NOMINAL_VERB_STATES,
                                  suffixes: described_class::NOMINAL_VERB_SUFFIXES)).
-        to eq %w{ çocuğuy }
+        to eq %w{ çocuğu }
       end
     end
   end
