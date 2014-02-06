@@ -187,7 +187,7 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".partial_stem" do
+  describe ".mark_stem", :focus do
     let(:suffix) do
       {
         name: "-dir",
@@ -201,7 +201,7 @@ describe TurkishStemmer do
       it "partially stems a word" do
         expect(
           described_class.
-            partial_stem("Türkiyedir", suffix)).
+            mark_stem("Türkiyedir", suffix)).
         to eq({ stem: true, word: "Türkiye", suffix_applied: "dir" })
       end
 
@@ -228,7 +228,7 @@ describe TurkishStemmer do
           it "stems correctly and increases the suffix" do
             expect(
               described_class.
-                partial_stem("loyum", suffix)).
+                mark_stem("loyum", suffix)).
             to eq({ stem: true, word: "lo", suffix_applied: "yum" })
           end
         end
@@ -237,7 +237,7 @@ describe TurkishStemmer do
           it "does not stem the word" do
             expect(
               described_class.
-                partial_stem("lotyum", suffix)).
+                mark_stem("lotyum", suffix)).
             to eq({ stem: false, word: "lotyum", suffix_applied: nil })
           end
         end

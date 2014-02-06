@@ -434,8 +434,8 @@ module TurkishStemmer
   #
   # @param word [String] the word to stem
   # @param suffix [Hash] a suffix record
-  # @return [Hash] the partial stem
-  def partial_stem(word, suffix)
+  # @return [Hash] a stem answer record
+  def mark_stem(word, suffix)
     stem = (suffix[:check_harmony] && has_vowel_harmony?(word)) ||
            !suffix[:check_harmony]
     suffix_applied = suffix[:regex]
