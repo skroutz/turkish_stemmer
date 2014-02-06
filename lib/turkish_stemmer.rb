@@ -1,17 +1,19 @@
 require "turkish_stemmer/version"
 require "pry"
 
+# Please note that we use only lowercase letters for all methods. One should
+# normalize input streams.
 module TurkishStemmer
   extend self
 
-  ALPHABET = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz"
-  VOWELS = "üiıueöaoAEIİOÖUÜ"
-  CONSONANTS = "BCÇDFGĞHJKLMNPRSŞTVYZbcçdfgğhjklmnprsştvyz"
-  ROUNDED_VOWELS = "oöuüOÖUÜ"
-  UNROUNDED_VOWELS = "iıeaAEIİ"
-  FOLLOWING_ROUNDED_VOWELS = "aeuüAEUÜ"
-  FRONT_VOWELS = "eiöüEİÖÜ"
-  BACK_VOWELS = "ıuaoAIOU"
+  ALPHABET   = "abcçdefgğhıijklmnoöprsştuüvyz"
+  VOWELS     = "üiıueöao"
+  CONSONANTS = "bcçdfgğhjklmnprsştvyz"
+  ROUNDED_VOWELS    = "oöuü"
+  UNROUNDED_VOWELS  = "iıea"
+  FOLLOWING_ROUNDED_VOWELS = "aeuü"
+  FRONT_VOWELS  = "eiöü"
+  BACK_VOWELS   = "ıuao"
 
   # Counts syllabes of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
