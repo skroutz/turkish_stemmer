@@ -175,7 +175,7 @@ describe TurkishStemmer do
       end
     end
 
-    context "when we pass suffixes and simple states", :focus do
+    context "when we pass suffixes and simple states" do
       it "strips suffixes correctly" do
         expect(
           described_class.
@@ -187,7 +187,7 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".mark_stem", :focus do
+  describe ".mark_stem" do
     let(:suffix) do
       {
         name: "-dir",

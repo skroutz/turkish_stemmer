@@ -438,29 +438,32 @@ module TurkishStemmer
   def mark_stem(word, suffix)
     stem = (suffix[:check_harmony] && has_vowel_harmony?(word)) ||
            !suffix[:check_harmony]
+
     suffix_applied = suffix[:regex]
 
-    new_word = if stem && word.match(/(#{suffix_applied})$/)
-                 word.gsub(/(#{suffix_applied})$/, '')
-               else
-                 stem = false
-                 suffix_applied = nil
-                 word
-               end
+    if stem && (match = word.match(/(#{suffix_applied})$/))
+      new_word = word.gsub(/(#{match.to_s})$/, '')
+      suffix_applied = match.to_s
 
-    if !suffix_applied.nil? && suffix[:extra_y_consonant] && "yY".include?(new_word.chars.last)
-      if valid_last_y_consonant?(new_word)
-        new_word = new_word.chop
-        suffix_applied = 'y' + suffix_applied
-      else
-        new_word = word
-        suffix_applied = nil
-        stem = false
+      if suffix[:extra_y_consonant] && "yY".include?(new_word.chars.last)
+        if valid_last_y_consonant?(new_word)
+          new_word = new_word.chop
+          suffix_applied = 'y' + suffix_applied
+        else
+          new_word = word
+          suffix_applied = nil
+          stem = false
+        end
       end
+    else
+      stem = false
+      suffix_applied = nil
+      new_word = word
     end
 
     { stem: stem, word: new_word, suffix_applied: suffix_applied }
   end
+
 
   def check(word)
     regex_suffix_removal(word, states: NOMINAL_VERB_STATES,
