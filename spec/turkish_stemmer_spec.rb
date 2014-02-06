@@ -158,7 +158,7 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".affix_morphological_stripper", :focus do
+  describe ".affix_morphological_stripper" do
     context "when states are empty" do
       it "returns the word" do
         expect(
