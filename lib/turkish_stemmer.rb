@@ -380,7 +380,6 @@ module TurkishStemmer
       answer    = mark_stem(word, suffix)
 
       if answer[:stem] == true
-        puts answer.to_s
         if to_state[:final_state] == true
           if to_state[:transitions].empty?
             # We are sure that this is a 100% final state
