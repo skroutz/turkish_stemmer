@@ -370,24 +370,14 @@ module TurkishStemmer
 
     stems    = []
     # Init first state pending transitions
-    pendings = states[:a][:transitions].map do |transition|
-                 {
-                   suffix: transition[:suffix],
-                   to_state: transition[:state],
-                   from_state: :a,
-                   word: word,
-                   rollback: nil
-                 }
-               end
+    pendings = generate_pendings(:a, word, states)
 
     while !pendings.empty? do
       info    = pendings.pop
       word    = info[:word]
       suffix  = suffixes[info[:suffix]]
       to_state = states[info[:to_state]]
-      answer    = partial_stem(word, suffix)
-
-      # binding.pry
+      answer    = mark_stem(word, suffix)
 
       if answer[:stem] == true
         puts answer.to_s
@@ -396,28 +386,11 @@ module TurkishStemmer
             # We are sure that this is a 100% final state
             stems.push answer[:word]
           else
-            to_state[:transitions].each do |transition|
-              pendings <<
-                {
-                  suffix: transition[:suffix],
-                  to_state: transition[:state],
-                  from_state: info[:to_state],
-                  word: answer[:word],
-                  rollback: answer[:word]
-                }
-            end
+            pendings += generate_pendings(info[:from_state], answer[:word], states)
           end
         else
-          to_state[:transitions].each do |transition|
-            pendings <<
-              {
-                suffix: transition[:suffix],
-                to_state: transition[:state],
-                from_state: info[:to_state],
-                word: answer[:word],
-                rollback: info[:rollback]
-              }
-          end
+          pendings += generate_pendings(info[:from_state], answer[:word],
+            states, rollback: info[:rollback])
         end
       else
         if info[:rollback]
@@ -428,6 +401,30 @@ module TurkishStemmer
 
     return [word] if pendings.empty? && stems.empty?
     stems
+  end
+
+  # Given a state_key and a word, scan through a given states record to generate
+  # valid pending transitions.
+  #
+  # @param key [String] the key for states hash
+  # @param word [String] the word to check
+  # @param states [Hash] the
+  def generate_pendings(key, word, states, options = {})
+    raise ArgumentError, "State #{key} does not exist" if (state = states[key]).nil?
+    rollback = options[:rollback]
+    rollback ||= state[:final_state] ? word : nil
+
+    response = state[:transitions].map do |transition|
+      {
+        suffix: transition[:suffix],
+        to_state: transition[:state],
+        from_state: :a,
+        word: word,
+        rollback: rollback
+      }
+    end
+
+    response
   end
 
   # Given a suffix it stems a word according to Turkish orthographic rules

@@ -259,4 +259,81 @@ describe TurkishStemmer do
       end
     end
   end
+
+  describe ".generate_pendings" do
+    let(:states) { described_class::NOMINAL_VERB_STATES }
+
+    it "raises an error if state does not exist" do
+      expect {
+        described_class.
+          generate_pendings(1, "test", states)
+      }.to raise_error(ArgumentError, "State #{1} does not exist")
+    end
+
+    context "when state key does not have transitions" do
+      it "returns an empty array" do
+        expect(
+          described_class.
+            # :f state does not have transitions
+            generate_pendings(:f, "test", states)).
+        to eq []
+      end
+    end
+
+    context "when state key has transitions" do
+      it "returns an array of hashes for each transition" do
+        expect(
+          described_class.
+            generate_pendings(:a, "test", states).first.keys).
+        to eq [:suffix, :to_state, :from_state, :word, :rollback]
+      end
+
+      it "sets :from_state key to current key state" do
+        expect(
+          described_class.
+            generate_pendings(:a, "test", states).first[:from_state]).
+        to eq :a
+      end
+
+      context "when state is not final" do
+        it "sets :rollback to current word" do
+          expect(
+            described_class.
+              # :a state is not final
+              generate_pendings(:a, "test", states).first[:rollback]).
+          to eq nil
+        end
+
+        context "and rollback is passed" do
+          it "sets :rollback to passed option" do
+            expect(
+              described_class.
+                generate_pendings(:a, "test", states, rollback: "custom").
+                  first[:rollback]).
+            to eq "custom"
+          end
+        end
+      end
+
+      context "when state is final" do
+        it "sets :rollback to current word" do
+          expect(
+            described_class.
+              # :b state is final
+              generate_pendings(:b, "test", states).first[:rollback]).
+          to eq "test"
+        end
+
+        context "and rollback is passed" do
+          it "sets :rollback to passed option" do
+            expect(
+              described_class.
+                generate_pendings(:a, "test", states, rollback: "custom").
+                  first[:rollback]).
+            to eq "custom"
+          end
+        end
+      end
+    end
+  end
 end
