@@ -187,6 +187,25 @@ describe TurkishStemmer do
         to eq %w{ çocuğu }
       end
     end
+
+    context "when one suffix matches correctly with a given word", :focus do
+      let(:unreachable_suffix) {
+        described_class::NOMINAL_VERB_SUFFIXES[:s3]
+      }
+
+      it "does not compare other suffixes in the same transition" do
+        described_class.
+          should_receive(:mark_stem).
+          with(anything, anything).
+          exactly(17).times.
+          and_call_original
+
+        puts described_class.
+          affix_morphological_stripper("taksicisiniz",
+            states: described_class::NOMINAL_VERB_STATES,
+            suffixes: described_class::NOMINAL_VERB_SUFFIXES)
+      end
+    end
   end
 
   describe ".mark_stem" do
@@ -259,6 +278,22 @@ describe TurkishStemmer do
           end
         end
       end
+    end
+  end
+
+  describe ".remove_pendings_like" do
+    let(:states) { described_class::NOMINAL_VERB_STATES }
+    let(:pendings) { described_class.generate_pendings(:a, "kalem", states) }
+
+    it "removes pendings with the same signature as the param" do
+      pending = pendings.shift
+
+      expect {
+        described_class.
+          remove_pendings_like(pending, pendings)
+      }.to change {
+        pendings.count
+      }.by (-3)
     end
   end
 

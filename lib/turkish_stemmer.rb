@@ -160,22 +160,26 @@ module TurkishStemmer
     pendings = generate_pendings(:a, word, states)
 
     while !pendings.empty? do
-      info    = pendings.pop
+      info    = pendings.shift
       word    = info[:word]
       suffix  = suffixes[info[:suffix]]
       to_state = states[info[:to_state]]
       answer    = mark_stem(word, suffix)
 
       if answer[:stem] == true
+        # We have a valid transition here. It is safe to remove any pendings
+        # with the same signature current pending
+        remove_pendings_like(info, pendings)
+
         if to_state[:final_state] == true
           if to_state[:transitions].empty?
             # We are sure that this is a 100% final state
             stems.push answer[:word]
           else
-            pendings += generate_pendings(info[:from_state], answer[:word], states)
+            pendings += generate_pendings(info[:to_state], answer[:word], states)
           end
         else
-          pendings += generate_pendings(info[:from_state], answer[:word],
+          pendings += generate_pendings(info[:to_state], answer[:word],
             states, rollback: info[:rollback])
         end
       else
@@ -208,6 +212,13 @@ module TurkishStemmer
         word: word,
         rollback: rollback
       }
+    end
+  end
+
+  def remove_pendings_like(pending, array)
+    array.reject! do |candidate|
+      candidate[:to_state] == pending[:to_state] &&
+      candidate[:from_state] == pending[:from_state]
     end
   end
 
