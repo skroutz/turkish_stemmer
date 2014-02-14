@@ -3,6 +3,16 @@ require "yaml"
 
 require "pry"
 
+# @todo
+#   * Generic last letter
+#   * Merging vowel
+#   * Drop pendings
+#   * Add .stem
+#   * Add states | suffixes
+#   * Exceptions (evaluation phase)
+#   * Add initial fixtures spec
+#   * Check overstemming (size)
+
 # Please note that we use only lowercase letters for all methods. One should
 # normalize input streams.
 module TurkishStemmer
@@ -177,8 +187,8 @@ module TurkishStemmer
     stems
   end
 
-  # Given a state_key and a word, scan through a given states record to generate
-  # valid pending transitions.
+  # Given a state key and a word, scans through a given states record to
+  # generate valid pending transitions.
   #
   # @param key [String] the key for states hash
   # @param word [String] the word to check
