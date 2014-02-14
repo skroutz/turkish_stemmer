@@ -1,4 +1,6 @@
 require "turkish_stemmer/version"
+require "yaml"
+
 require "pry"
 
 # Please note that we use only lowercase letters for all methods. One should
@@ -14,6 +16,9 @@ module TurkishStemmer
   FOLLOWING_ROUNDED_VOWELS = "aeuü"
   FRONT_VOWELS  = "eiöü"
   BACK_VOWELS   = "ıuao"
+
+  NOMINAL_VERB_STATES   = YAML.load_file("config/nominal_verb_states.yml")
+  NOMINAL_VERB_SUFFIXES = YAML.load_file("config/nominal_verb_suffixes.yml")
 
   # Counts syllabes of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
