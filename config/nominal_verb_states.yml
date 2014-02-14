@@ -1,15 +1,21 @@
+# The order of the transitions is very crusial. Please enter the longer
+# suffixes first for every group of states and whenever a conflict may
+# occur.
 a:
   transitions:
+    # Transitions to state B
     - suffix: :s1
       state:  :b
     - suffix: :s2
       state:  :b
+    - suffix: :s4
+      state:  :b
     - suffix: :s3
       state:  :b
-    - suffix: :s4
-      state: :b
+    # Transitions to state C
     - suffix: :s5
       state: :c
+    # Transitions to state D
     - suffix: :s6
       state: :d
     - suffix: :s7
@@ -18,8 +24,10 @@ a:
       state: :d
     - suffix: :s9
       state: :d
+    # Transitions to state E
     - suffix: :s10
       state: :e
+    # Transitions to state F
     - suffix: :s12
       state: :f
     - suffix: :s13
@@ -28,6 +36,7 @@ a:
       state: :f
     - suffix: :s15
       state: :f
+    # Transitions to state H
     - suffix: :s11
       state: :h
 
@@ -64,6 +73,7 @@ d:
 
 e:
   transitions:
+    # Transitions to state G
     - suffix: :s1
       state: :g
     - suffix: :s2
@@ -74,6 +84,7 @@ e:
       state: :g
     - suffix: :s5
       state: :g
+    # Transitions to state F
     - suffix: :s14
       state: :f
   final_state: true
@@ -93,8 +104,10 @@ g:
 
 h:
   transitions:
+    # Transitions to state F
     - suffix: :s14
       state: :f
+    # Transitions to state G
     - suffix: :s1
       state: :g
     - suffix: :s2
