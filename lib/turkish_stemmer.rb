@@ -208,7 +208,7 @@ module TurkishStemmer
       {
         suffix: transition[:suffix],
         to_state: transition[:state],
-        from_state: :a,
+        from_state: key,
         word: word,
         rollback: rollback
       }
