@@ -1,91 +1,91 @@
 1:
-  name: "-(y)Um",
-  regex: "ım|im|um|üm",
-  extra_y_consonant: true,
+  name: "-(y)Um"
+  regex: "ım|im|um|üm"
+  extra_y_consonant: true
   check_harmony: true
 
 2:
-  name: "-sUn",
-  regex: "sın|sin|sun|sün",
-  extra_y_consonant: false,
+  name: "-sUn"
+  regex: "sın|sin|sun|sün"
+  extra_y_consonant: false
   check_harmony: true
 
 3:
-  name: "-(y)Uz",
-  regex: "ız|iz|uz|üz",
-  extra_y_consonant: true,
+  name: "-(y)Uz"
+  regex: "ız|iz|uz|üz"
+  extra_y_consonant: true
   check_harmony: true
 
 4:
-  name: "-sUnUz",
-  regex: "sınız|siniz|sunuz|sünüz",
-  extra_y_consonant: false,
+  name: "-sUnUz"
+  regex: "sınız|siniz|sunuz|sünüz"
+  extra_y_consonant: false
   check_harmony: true
 
 5:
-  name: "-lAr",
-  regex: "lar|ler",
-  extra_y_consonant: false,
+  name: "-lAr"
+  regex: "lar|ler"
+  extra_y_consonant: false
   check_harmony: true
 
 6:
-  name: "-m",
-  regex: "m",
-  extra_y_consonant: false,
+  name: "-m"
+  regex: "m"
+  extra_y_consonant: false
   check_harmony: true
 
 7:
-  name: "-n",
-  regex: "n",
-  extra_y_consonant: false,
+  name: "-n"
+  regex: "n"
+  extra_y_consonant: false
   check_harmony: true
 
 8:
-  name: "-k",
-  regex: "k",
-  extra_y_consonant: false,
+  name: "-k"
+  regex: "k"
+  extra_y_consonant: false
   check_harmony: true
 
 9:
-  name: "-nUz",
-  regex: "nız|niz|nuz|nüz",
-  extra_y_consonant: false,
+  name: "-nUz"
+  regex: "nız|niz|nuz|nüz"
+  extra_y_consonant: false
   check_harmony: true
 
 10:
-  name: "-DUr",
-  regex: "tır|tir|tur|tür|dır|dir|dur|dür",
-  extra_y_consonant: false,
+  name: "-DUr"
+  regex: "tır|tir|tur|tür|dır|dir|dur|dür"
+  extra_y_consonant: false
   check_harmony: true
 
 
 11:
-  name: "-cAsInA",
-  regex: "casına|casine",
-  extra_y_consonant: false,
+  name: "-cAsInA"
+  regex: "casına|casine"
+  extra_y_consonant: false
   check_harmony: true
 
 12:
-  name: "-(y)DU",
-  regex: "dı|di|du|dü|tı|ti|tu|tü",
-  extra_y_consonant: true,
+  name: "-(y)DU"
+  regex: "dı|di|du|dü|tı|ti|tu|tü"
+  extra_y_consonant: true
   check_harmony: true
 
 13:
-  name: "-(y)sA",
-  regex: "sa|se",
-  extra_y_consonant: true,
+  name: "-(y)sA"
+  regex: "sa|se"
+  extra_y_consonant: true
   check_harmony: true
 
 14:
-  name: "-(y)mUş",
-  regex: "muş|miş|müş|mı",
-  extra_y_consonant: true,
+  name: "-(y)mUş"
+  regex: "muş|miş|müş|mı"
+  extra_y_consonant: true
   check_harmony: true
 
 15:
-  name: "-(y)ken",
-  regex: "ken",
-  extra_y_consonant: true,
+  name: "-(y)ken"
+  regex: "ken"
+  extra_y_consonant: true
   check_harmony: true
 
