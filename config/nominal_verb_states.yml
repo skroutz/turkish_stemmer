@@ -1,81 +1,81 @@
 a:
   transitions:
-    - suffix: 1
-      state: "b"
-    - suffix: 2
-      state: "b"
-    - suffix: 3
-      state: "b"
-    - suffix: 4
-      state: "b"
-    - suffix: 5
-      state: "c"
-    - suffix: 6
-      state: "d"
-    - suffix: 7
-      state: "d"
-    - suffix: 8
-      state: "d"
-    - suffix: 9
-      state: "d"
-    - suffix: 10
-      state: "e"
-    - suffix: 12
-      state: "f"
-    - suffix: 13
-      state: "f"
-    - suffix: 14
-      state: "f"
-    - suffix: 15
-      state: "f"
-    - suffix: 11
-      state: "h"
+    - suffix: :s1
+      state:  :b
+    - suffix: :s2
+      state:  :b
+    - suffix: :s3
+      state:  :b
+    - suffix: :s4
+      state: :b
+    - suffix: :s5
+      state: :c
+    - suffix: :s6
+      state: :d
+    - suffix: :s7
+      state: :d
+    - suffix: :s8
+      state: :d
+    - suffix: :s9
+      state: :d
+    - suffix: :s10
+      state: :e
+    - suffix: :s12
+      state: :f
+    - suffix: :s13
+      state: :f
+    - suffix: :s14
+      state: :f
+    - suffix: :s15
+      state: :f
+    - suffix: :s11
+      state: :h
 
   final_state: false
 
 b:
   transitions:
-    - suffix: 14
-      state: "f"
+    - suffix: :s14
+      state: :f
 
   final_state: true
 
 c:
   transitions:
-    - suffix: 10
-      state: "f"
-    - suffix: 12
-      state: "f"
-    - suffix: 13
-      state: "f"
-    - suffix: 14
-      state: "f"
+    - suffix: :s10
+      state: :f
+    - suffix: :s12
+      state: :f
+    - suffix: :s13
+      state: :f
+    - suffix: :s14
+      state: :f
 
   final_state: true
 
 d:
   transitions:
-    - suffix: 12
-      state: "f"
-    - suffix: 13
-      state: "f"
+    - suffix: :s12
+      state: :f
+    - suffix: :s13
+      state: :f
 
   final_state: false
 
 e:
   transitions:
-    - suffix: 1
-      state: "g"
-    - suffix: 2
-      state: "g"
-    - suffix: 3
-      state: "g"
-    - suffix: 4
-      state: "g"
-    - suffix: 5
-      state: "g"
-    - suffix: 14
-      state: "f"
+    - suffix: :s1
+      state: :g
+    - suffix: :s2
+      state: :g
+    - suffix: :s3
+      state: :g
+    - suffix: :s4
+      state: :g
+    - suffix: :s5
+      state: :g
+    - suffix: :s14
+      state: :f
   final_state: true
 
 f:
@@ -86,25 +86,25 @@ f:
 
 g:
   transitions:
-    - suffix: 14
-      state: "f"
+    - suffix: :s14
+      state: :f
 
   final_state: false
 
 h:
   transitions:
-    - suffix: 14
-      state: "f"
-    - suffix: 1
-      state: "g"
-    - suffix: 2
-      state: "g"
-    - suffix: 3
-      state: "g"
-    - suffix: 4
-      state: "g"
-    - suffix: 5
-      state: "g"
+    - suffix: :s14
+      state: :f
+    - suffix: :s1
+      state: :g
+    - suffix: :s2
+      state: :g
+    - suffix: :s3
+      state: :g
+    - suffix: :s4
+      state: :g
+    - suffix: :s5
+      state: :g
 
   final_state: false
 

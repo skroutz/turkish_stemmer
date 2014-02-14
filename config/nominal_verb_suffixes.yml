@@ -1,89 +1,89 @@
-1:
+s1:
   name: "-(y)Um"
   regex: "ım|im|um|üm"
   extra_y_consonant: true
   check_harmony: true
 
-2:
+s2:
   name: "-sUn"
   regex: "sın|sin|sun|sün"
   extra_y_consonant: false
   check_harmony: true
 
-3:
+s3:
   name: "-(y)Uz"
   regex: "ız|iz|uz|üz"
   extra_y_consonant: true
   check_harmony: true
 
-4:
+s4:
   name: "-sUnUz"
   regex: "sınız|siniz|sunuz|sünüz"
   extra_y_consonant: false
   check_harmony: true
 
-5:
+s5:
   name: "-lAr"
   regex: "lar|ler"
   extra_y_consonant: false
   check_harmony: true
 
-6:
+s6:
   name: "-m"
   regex: "m"
   extra_y_consonant: false
   check_harmony: true
 
-7:
+s7:
   name: "-n"
   regex: "n"
   extra_y_consonant: false
   check_harmony: true
 
-8:
+s8:
   name: "-k"
   regex: "k"
   extra_y_consonant: false
   check_harmony: true
 
-9:
+s9:
   name: "-nUz"
   regex: "nız|niz|nuz|nüz"
   extra_y_consonant: false
   check_harmony: true
 
-10:
+s10:
   name: "-DUr"
   regex: "tır|tir|tur|tür|dır|dir|dur|dür"
   extra_y_consonant: false
   check_harmony: true
 
 
-11:
+s11:
   name: "-cAsInA"
   regex: "casına|casine"
   extra_y_consonant: false
   check_harmony: true
 
-12:
+s12:
   name: "-(y)DU"
   regex: "dı|di|du|dü|tı|ti|tu|tü"
   extra_y_consonant: true
   check_harmony: true
 
-13:
+s13:
   name: "-(y)sA"
   regex: "sa|se"
   extra_y_consonant: true
   check_harmony: true
 
-14:
+s14:
   name: "-(y)mUş"
   regex: "muş|miş|müş|mı"
   extra_y_consonant: true
   check_harmony: true
 
-15:
+s15:
   name: "-(y)ken"
   regex: "ken"
   extra_y_consonant: true
