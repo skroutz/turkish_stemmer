@@ -77,6 +77,7 @@ module TurkishStemmer
   #
   # @param word [String] the word to check for valid last y consonant
   # @return [Boolean]
+  # @deprecated
   def valid_last_y_consonant?(word)
     word_chars    = word.chars
     previous_char = word_chars[-2]
@@ -237,11 +238,13 @@ module TurkishStemmer
       new_word = word.gsub(/(#{match.to_s})$/, '')
       suffix_applied = match.to_s
 
-      if suffix[:extra_y_consonant] && "yY".include?(new_word.chars.last)
-        if valid_last_y_consonant?(new_word)
+      if suffix[:optional_letter]
+        answer, match = valid_optional_letter?(new_word, suffix[:optional_letter])
+
+        if answer && match
           new_word = new_word.chop
-          suffix_applied = 'y' + suffix_applied
-        else
+          suffix_applied = match + suffix_applied
+        elsif !answer
           new_word = word
           suffix_applied = nil
           stem = false
@@ -256,6 +259,31 @@ module TurkishStemmer
     { stem: stem, word: new_word, suffix_applied: suffix_applied }
   end
 
+  # Given a word and a letter it checks if the optional letter can be part of
+  # the stem or not.
+  #
+  # @param word [String] the examined word
+  # @param letter [String] a single letter or a string armed with a regular
+  #   expression
+  # @return [Array]
+  def valid_optional_letter?(word, letter)
+    match         = word.match(/#{letter}$/)
+    answer        = true
+    matched_char  = nil
+
+    if match
+      matched_char  = match.to_s
+      previous_char = word[-2]
+
+      answer = if VOWELS.include?(matched_char)
+                 CONSONANTS.include?(previous_char)
+               else
+                 VOWELS.include?(previous_char)
+               end
+    end
+
+    [answer, matched_char]
+  end
 
   def check(word)
     regex_suffix_removal(word, states: NOMINAL_VERB_STATES,

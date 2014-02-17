@@ -213,7 +213,7 @@ describe TurkishStemmer do
       {
         name: "-dir",
         regex: "dir",
-        extra_y_consonant: false,
+        optional_letter: false,
         check_harmony: true
       }
     end
@@ -256,7 +256,7 @@ describe TurkishStemmer do
 
       context "when suffix has (y) as optional letter" do
         before do
-          suffix[:extra_y_consonant] = true
+          suffix[:optional_letter] = "y|y"
           suffix[:regex] = "um"
         end
 
@@ -369,6 +369,56 @@ describe TurkishStemmer do
                   first[:rollback]).
             to eq "custom"
           end
+        end
+      end
+    end
+  end
+
+  describe ".valid_optional_letter?" do
+    context "when last letter of the word is not equal to candidate" do
+      it "responds with [true,nil] - indicating that there was not match" do
+        expect(
+          described_class.valid_optional_letter?("test", "r")).
+        to eq([true, nil])
+      end
+    end
+
+    context "when there is a vowel match" do
+      context "and the previous char is a vowel" do
+        it "responds with false" do
+          expect(
+            described_class.
+              valid_optional_letter?("takcicii", "i")).
+          to eq([false, "i"])
+        end
+      end
+
+      context "and the previous char is a consonant" do
+        it "responds with true" do
+          expect(
+            described_class.
+              valid_optional_letter?("okula", "a")).
+          to eq([true, "a"])
+        end
+      end
+    end
+
+    context "when there is a consonant match" do
+      context "and the previous char is a vowel" do
+        it "responds with true" do
+          expect(
+            described_class.
+              valid_optional_letter?("litiy", "y")).
+          to eq([true, "y"])
+        end
+      end
+
+      context "and the previous char is a consonant" do
+        it "responds with true" do
+          expect(
+            described_class.
+              valid_optional_letter?("lity", "y")).
+          to eq([false, "y"])
         end
       end
     end
