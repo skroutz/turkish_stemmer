@@ -290,9 +290,4 @@ module TurkishStemmer
 
     [answer, matched_char]
   end
-
-  def check(word)
-    regex_suffix_removal(word, states: NOMINAL_VERB_STATES,
-      suffixes: NOMINAL_VERB_SUFFIXES)
-  end
 end
