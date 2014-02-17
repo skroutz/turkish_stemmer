@@ -18,6 +18,8 @@ require "pry"
 module TurkishStemmer
   extend self
 
+  $DEBUG = true
+
   ALPHABET   = "abcçdefgğhıijklmnoöprsştuüvyz"
   VOWELS     = "üiıueöao"
   CONSONANTS = "bcçdfgğhjklmnprsştvyz"
@@ -168,6 +170,10 @@ module TurkishStemmer
       answer    = mark_stem(word, suffix)
 
       if answer[:stem] == true
+        if $DEBUG
+          puts answer.to_s
+        end
+
         # We have a valid transition here. It is safe to remove any pendings
         # with the same signature current pending
         remove_pendings_like(info, pendings)
