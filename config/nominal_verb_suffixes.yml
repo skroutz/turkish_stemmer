@@ -1,7 +1,7 @@
 s1:
   name: "-(y)Um"
   regex: "ım|im|um|üm"
-  optional_letter: "y|Y"
+  optional_letter: "y"
   check_harmony: true
 
 s2:
@@ -13,7 +13,7 @@ s2:
 s3:
   name: "-(y)Uz"
   regex: "ız|iz|uz|üz"
-  optional_letter: "y|Y"
+  optional_letter: "y"
   check_harmony: true
 
 s4:
@@ -68,24 +68,24 @@ s11:
 s12:
   name: "-(y)DU"
   regex: "dı|di|du|dü|tı|ti|tu|tü"
-  optional_letter: "y|Y"
+  optional_letter: "y"
   check_harmony: true
 
 s13:
   name: "-(y)sA"
   regex: "sa|se"
-  optional_letter: "y|Y"
+  optional_letter: "y"
   check_harmony: true
 
 s14:
   name: "-(y)mUş"
   regex: "muş|miş|müş|mış"
-  optional_letter: "y|Y"
+  optional_letter: "y"
   check_harmony: true
 
 s15:
   name: "-(y)ken"
   regex: "ken"
-  optional_letter: "y|Y"
+  optional_letter: "y"
   check_harmony: true
 
