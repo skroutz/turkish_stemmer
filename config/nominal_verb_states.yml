@@ -1,6 +1,4 @@
-# The order of the transitions is very crusial. Please enter the longer
-# suffixes first for every group of states and whenever a conflict may
-# occur.
+# The order of the transitions is very crusial.
 a:
   transitions:
     # Transitions to state B
