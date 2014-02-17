@@ -181,14 +181,14 @@ describe TurkishStemmer do
       it "strips suffixes correctly" do
         expect(
           described_class.
-            affix_morphological_stripper("çocuğuymuşum",
+            affix_morphological_stripper("taksicimişimdir",
                                  states: described_class::NOMINAL_VERB_STATES,
                                  suffixes: described_class::NOMINAL_VERB_SUFFIXES)).
-        to eq %w{ çocuğu }
+        to eq %w{ taksici }
       end
     end
 
-    context "when one suffix matches correctly with a given word", :focus do
+    context "when one suffix matches correctly with a given word" do
       let(:unreachable_suffix) {
         described_class::NOMINAL_VERB_SUFFIXES[:s3]
       }
