@@ -323,4 +323,10 @@ module TurkishStemmer
 
     [answer, matched_char]
   end
+
+  def test_stem(word)
+    affix_morphological_stripper word,
+      states: self::NOMINAL_VERB_STATES,
+      suffixes: self::NOMINAL_VERB_SUFFIXES
+  end
 end
