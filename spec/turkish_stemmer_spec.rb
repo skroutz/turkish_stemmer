@@ -1,8 +1,10 @@
 # coding: utf-8
 require "spec_helper"
 require "pry"
+require "csv"
 
 describe TurkishStemmer do
+
   describe ".count_syllables" do
     it "counts syllables correctly" do
       expect(described_class.count_syllables("erikler")).to eq 3
@@ -423,4 +425,17 @@ describe TurkishStemmer do
       end
     end
   end
+
+  # context "1:1 testing with paper" do
+  #   CSV.read("spec/support/fixtures.csv").each do |row|
+  #     it "stems #{row[0]} correct" do
+  #       expect(
+  #         described_class.
+  #           affix_morphological_stripper(row[0],
+  #             states: described_class::NOMINAL_VERB_STATES,
+  #             suffixes: described_class::NOMINAL_VERB_SUFFIXES)).
+  #       to eq [row[1]]
+  #     end
+  #   end
+  # end
 end
