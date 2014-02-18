@@ -322,7 +322,7 @@ describe TurkishStemmer do
         expect(
           described_class.
             generate_pendings(:a, "test", states).first.keys).
-        to eq [:suffix, :to_state, :from_state, :word, :rollback]
+        to eq [:suffix, :to_state, :from_state, :word, :rollback, :mark]
       end
 
       it "sets :from_state key to current key state" do

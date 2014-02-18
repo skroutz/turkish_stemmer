@@ -174,23 +174,26 @@ module TurkishStemmer
           puts answer.to_s
         end
 
-        # We have a valid transition here. It is safe to remove any pendings
-        # with the same signature current pending
-        remove_pendings_like(info, pendings)
-
         if to_state[:final_state] == true
+          # We have a valid transition here. It is safe to remove any pendings
+          # with the same signature current pending
+          remove_pendings_like(info, pendings)
+          remove_mark_pendings(pendings)
+
           if to_state[:transitions].empty?
             # We are sure that this is a 100% final state
             stems.push answer[:word]
           else
-            pendings += generate_pendings(info[:to_state], answer[:word], states)
+            pendings.concat(generate_pendings(info[:to_state], answer[:word], states))
           end
         else
-          pendings += generate_pendings(info[:to_state], answer[:word],
-            states, rollback: info[:rollback])
+          mark_pendings(info, pendings)
+          pendings.concat(generate_pendings(info[:to_state], answer[:word],
+            states, rollback: info[:rollback], mark: true))
         end
       else
-        if info[:rollback]
+        if info[:rollback] && similar_pendings(info, pendings).empty?
+          # unmark_pendings(pendings)
           stems.push info[:rollback]
         end
       end
@@ -210,6 +213,7 @@ module TurkishStemmer
     raise ArgumentError, "State #{key} does not exist" if (state = states[key]).nil?
     rollback = options[:rollback]
     rollback ||= state[:final_state] ? word : nil
+    mark = options[:mark] || false
 
     state[:transitions].map do |transition|
       {
@@ -217,13 +221,42 @@ module TurkishStemmer
         to_state: transition[:state],
         from_state: key,
         word: word,
-        rollback: rollback
+        rollback: rollback,
+        mark: mark
       }
     end
   end
 
   def remove_pendings_like(pending, array)
     array.reject! do |candidate|
+      candidate[:to_state] == pending[:to_state] &&
+      candidate[:from_state] == pending[:from_state]
+    end
+  end
+
+  def mark_pendings(pending, array)
+    array.select do |candidate|
+      candidate[:to_state] == pending[:to_state] &&
+      candidate[:from_state] == pending[:from_state]
+    end.each do |candidate|
+      candidate[:mark] = true
+    end
+  end
+
+  def unmark_pendings(array)
+    array.select do |candidate|
+      candidate[:mark] == true
+    end.each { |candidate| candidate[:mark] = false }
+  end
+
+  def remove_mark_pendings(array)
+    array.reject! do |candidate|
+      candidate[:mark] == true
+    end
+  end
+
+  def similar_pendings(pending, array)
+    array.select do |candidate|
       candidate[:to_state] == pending[:to_state] &&
       candidate[:from_state] == pending[:from_state]
     end
