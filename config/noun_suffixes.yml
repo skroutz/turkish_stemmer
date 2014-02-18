@@ -1,0 +1,113 @@
+s1:
+  name: "-lAr"
+  regex: "lar|ler"
+  optional_letter: false
+  check_harmony: true
+
+s2:
+  name: "-(U)m"
+  regex: "m"
+  optional_letter: "ı|i|u|ü"
+  check_harmony: true
+
+s3:
+  name: "-(U)mUz"
+  regex: "mız|miz|muz|müz"
+  optional_letter: "ı|i|u|ü"
+  check_harmony: true
+
+s4:
+  name: "-Un"
+  regex: "ın|in|un|ün"
+  optional_letter: false
+  check_harmony: true
+
+s5:
+  name: "-(U)nUz"
+  regex: "nız|niz|nuz|nüz"
+  optional_letter: "ı|i|u|ü"
+  check_harmony: true
+
+s6:
+  name: "-(s)U"
+  regex: "ı|i|u|ü"
+  optional_letter: "s"
+  check_harmony: true
+
+s7:
+  name: "-lArl"
+  regex: "larl|lerl"
+  optional_letter: false
+  check_harmony: true
+
+s8:
+  name: "-(y)U"
+  regex: "ı|i|u|ü"
+  optional_letter: "y"
+  check_harmony: true
+
+s9:
+  name: "-nU"
+  regex: "nı|ni|nu|nü"
+  optional_letter: false
+  check_harmony: true
+
+s10:
+  name: "-(n)Un"
+  regex: "ın|in|un|ün"
+  optional_letter: "n"
+  check_harmony: true
+
+s11:
+  name: "-(y)A"
+  regex: "a|e"
+  optional_letter: "y"
+  check_harmony: true
+
+s12:
+  name: "-nA"
+  regex: "na|ne"
+  optional_letter: false
+  check_harmony: true
+
+s13:
+  name: "-DA"
+  regex: "da|de|ta|te"
+  optional_letter: false
+  check_harmony: true
+
+s14:
+  name: "-nDA"
+  regex: "nta|nte|nda|nde"
+  optional_letter: false
+  check_harmony: true
+
+s15:
+  name: "-DAn"
+  regex: "dan|tan|den|ten"
+  optional_letter: false
+  check_harmony: true
+
+s16:
+  name: "-nDAn"
+  regex: "ndan|ntan|nden|nten"
+  optional_letter: false
+  check_harmony: true
+
+s17:
+  name: "-(y)lA"
+  regex: "la|le"
+  optional_letter: "y"
+  check_harmony: true
+
+s18:
+  name: "-ki"
+  regex: "ki"
+  optional_letter: false
+  check_harmony: true
+
+s19:
+  name: "-(n)cA"
+  regex: "ca|ce"
+  optional_letter: "n"
+  check_harmony: true
