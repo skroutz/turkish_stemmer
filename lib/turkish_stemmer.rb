@@ -203,7 +203,7 @@ module TurkishStemmer
     stems
   end
 
-  # Given a state key and a word, scans through a given states record to
+  # Given a state key and a word, scans through given states record to
   # generate valid pending transitions.
   #
   # @param key [String] the key for states hash
