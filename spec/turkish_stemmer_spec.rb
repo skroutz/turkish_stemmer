@@ -179,14 +179,72 @@ describe TurkishStemmer do
       end
     end
 
-    context "when we pass suffixes and simple states" do
-      it "strips suffixes correctly" do
-        expect(
-          described_class.
-            affix_morphological_stripper("taksicimişimdir",
-                                 states: described_class::NOMINAL_VERB_STATES,
-                                 suffixes: described_class::NOMINAL_VERB_SUFFIXES)).
-        to eq %w{ taksici }
+    context "when there exist states and suffixes"  do
+      let(:states) {
+        described_class.
+          load_states_or_suffixes("spec/fixtures/simple_state.yml")
+      }
+
+      let(:suffixes) {
+        described_class.
+          load_states_or_suffixes("spec/fixtures/simple_suffix.yml")
+      }
+
+      it "generates pendings for the initial state" do
+        described_class.should_receive(:generate_pendings).with(:a,
+          "word", states).and_call_original
+
+        described_class.affix_morphological_stripper("word",
+          states: states, suffixes: suffixes)
+      end
+    end
+
+    context "when a transition is valid"  do
+      let(:states) {
+        described_class.
+          load_states_or_suffixes("spec/fixtures/simple_state.yml")
+      }
+
+      let(:suffixes) {
+        described_class.
+          load_states_or_suffixes("spec/fixtures/simple_suffix.yml")
+      }
+
+      context "and the transit state is a final state" do
+        it "removes similar pending transitions" do
+          described_class.should_receive(:mark_stem).with(
+            "guzelim", suffixes[:s1]).and_call_original
+
+          described_class.affix_morphological_stripper(
+            "guzelim", states: states, suffixes: suffixes)
+        end
+
+        context "with no other transitions" do
+          it "stems the word" do
+            expect(
+              described_class.
+                affix_morphological_stripper("guzelim",
+                  states: states, suffixes: suffixes)).
+            to eq ["guzel"]
+          end
+        end
+
+        context "with other transitions"  do
+          let(:states) {
+            described_class.load_states_or_suffixes("spec/fixtures/simple_state_02.yml")
+          }
+
+          it "adds more pendings to check" do
+            described_class.should_receive(:mark_stem).with("guzelim",
+              suffixes[:s1]).and_call_original
+
+            described_class.should_receive(:mark_stem).with("guzel",
+              suffixes[:s1]).and_call_original
+
+            described_class.affix_morphological_stripper("guzelim",
+              states: states, suffixes: suffixes)
+          end
+        end
       end
     end
 
