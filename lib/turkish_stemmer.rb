@@ -148,6 +148,13 @@ module TurkishStemmer
     false
   end
 
+
+  def stem_post_process(stems)
+    stems.flatten!.uniq!
+    stems.map { |word| last_consonant(word) }
+  end
+
+
   # A simple algorithm to strip suffixes from a word based on states and
   # transitions.
   #

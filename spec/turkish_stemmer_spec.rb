@@ -437,16 +437,22 @@ describe TurkishStemmer do
     end
   end
 
-  # context "1:1 testing with paper" do
-  #   CSV.read("spec/support/fixtures.csv").each do |row|
-  #     it "stems #{row[0]} correct" do
-  #       expect(
-  #         described_class.
-  #           affix_morphological_stripper(row[0],
-  #             states: described_class::NOMINAL_VERB_STATES,
-  #             suffixes: described_class::NOMINAL_VERB_SUFFIXES)).
-  #       to eq [row[1]]
-  #     end
-  #   end
-  # end
+  describe ".stem_post_process", :focus do
+    context "when input stream has words with last consonant replacements" do
+      it "replaces last consonant" do
+        expect(described_class.stem_post_process(["kebab"])).to eq(["kebap"])
+      end
+    end
+  end
+
+  context "1:1 testing with paper", :focus do
+    CSV.read("spec/support/fixtures.csv").each do |row|
+      it "stems #{row[0]} correct" do
+        expect(
+          described_class.
+            stem(row[0])).
+        to eq [row[1]]
+      end
+    end
+  end
 end
