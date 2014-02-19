@@ -1,0 +1,7 @@
+s1:
+  name: "test"
+  regex: "im"
+
+s2:
+  name: "another"
+  regex: "siniz"

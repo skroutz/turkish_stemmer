@@ -1,0 +1,7 @@
+s1:
+  name: "TEST"
+  regex: "test"
+
+s2:
+  name: "another"
+  regex: "another"

@@ -1,0 +1,21 @@
+a:
+  transitions:
+    - suffix: :s1
+      state: :b
+
+    - suffix: :s2
+      state: :b
+
+  final_state: true
+
+b:
+  transitions:
+    - suffix: :s1
+      state: :c
+
+  final_state: true
+
+c:
+  transitions: []
+
+  final_state: true
