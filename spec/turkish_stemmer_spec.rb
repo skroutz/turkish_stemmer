@@ -210,6 +210,17 @@ describe TurkishStemmer do
     end
   end
 
+  describe ".last_consonant", :focus do
+    context "when last consonant is among 'b', 'c', 'd' or 'ğ'" do
+      it "replaced by 'p', 'ç', 't' or 'k'" do
+        expect(described_class.last_consonant('kebab')).to eq('kebap')
+        expect(described_class.last_consonant('kebac')).to eq('kebaç')
+        expect(described_class.last_consonant('kebad')).to eq('kebat')
+        expect(described_class.last_consonant('kebağ')).to eq('kebak')
+      end
+    end
+  end
+
   describe ".mark_stem" do
     let(:suffix) do
       {

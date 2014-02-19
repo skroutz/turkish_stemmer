@@ -329,6 +329,17 @@ module TurkishStemmer
     [answer, matched_char]
   end
 
+  def last_consonant(word)
+    consonants  = { 'b' => 'p', 'c' => 'ç', 'd' => 't', 'ğ' => 'k' }
+    last_char   = word[-1]
+
+    if consonants.keys.include?(last_char)
+      word[-1] = consonants[last_char]
+    end
+
+    word
+  end
+
   def test_stem(word)
     affix_morphological_stripper word,
       states: self::NOMINAL_VERB_STATES,
