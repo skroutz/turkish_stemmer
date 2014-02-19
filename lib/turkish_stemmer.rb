@@ -220,11 +220,11 @@ module TurkishStemmer
             # We are sure that this is a 100% final state
             stems.push answer[:word]
           else
-            pendings.concat(generate_pendings(info[:to_state], answer[:word], states))
+            pendings.unshift(*generate_pendings(info[:to_state], answer[:word], states))
           end
         else
           mark_pendings(info, pendings)
-          pendings.concat(generate_pendings(info[:to_state], answer[:word],
+          pendings.unshift(*generate_pendings(info[:to_state], answer[:word],
             states, rollback: info[:rollback], mark: true))
         end
       else
