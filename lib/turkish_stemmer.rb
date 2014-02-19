@@ -166,6 +166,11 @@ module TurkishStemmer
 
   def stem_post_process(stems)
     stems.flatten!.uniq!
+
+    # Reject all non-syllable words
+    stems.reject! { |w| count_syllables(w) == 0 }
+
+    # Transform last consonant word
     stems.map { |word| last_consonant(word) }
   end
 
