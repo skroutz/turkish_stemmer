@@ -236,7 +236,8 @@ module TurkishStemmer
     end
 
     return [word] if pendings.empty? && stems.empty?
-    stems
+
+    stems.uniq
   end
 
   # Given a state key and a word, scans through given states record to
