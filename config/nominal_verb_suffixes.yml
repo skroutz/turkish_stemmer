@@ -61,7 +61,7 @@ s10:
 
 s11:
   name: "-cAsInA"
-  regex: "casına|casine"
+  regex: "casına|cesine"
   optional_letter: false
   check_harmony: true
 
