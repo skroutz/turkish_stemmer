@@ -148,12 +148,36 @@ module TurkishStemmer
     false
   end
 
+  # Turkish stemmer
+  #
+  #
+  def stem(word)
+    # Pre-Process
+    return word if count_syllables(word) <= 1
+
+    # Process
+    stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
+              noun_suffix_machine { nominal_word }
+            end
+
+    # Post-Process
+    stem_post_process(stems)
+  end
 
   def stem_post_process(stems)
     stems.flatten!.uniq!
     stems.map { |word| last_consonant(word) }
   end
 
+  def nominal_verbs_suffix_machine
+    affix_morphological_stripper(yield, states: self::NOMINAL_VERB_STATES,
+      suffixes: self::NOMINAL_VERB_SUFFIXES)
+  end
+
+  def noun_suffix_machine
+    affix_morphological_stripper(yield, states: self::NOUN_STATES,
+      suffixes: self::NOUN_SUFFIXES)
+  end
 
   # A simple algorithm to strip suffixes from a word based on states and
   # transitions.

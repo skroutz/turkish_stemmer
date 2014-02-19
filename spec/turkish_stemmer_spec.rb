@@ -210,6 +210,20 @@ describe TurkishStemmer do
     end
   end
 
+  describe ".stem", :focus do
+    context "when input is single syllable" do
+      it "returns the input as is" do
+        expect(described_class.stem("ev")).to eq "ev"
+      end
+    end
+
+    context "when input has zero syllables - one consonant" do
+      it "returns the input as is" do
+        expect(described_class.stem("p")).to eq "p"
+      end
+    end
+  end
+
   describe ".last_consonant", :focus do
     context "when last consonant is among 'b', 'c', 'd' or 'ğ'" do
       it "replaced by 'p', 'ç', 't' or 'k'" do
