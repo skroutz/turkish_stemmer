@@ -4,14 +4,14 @@ a:
     # Transitions to state B
     - suffix: :s8
       state: :b
-    - suffix: :s11
-      state: :b
     - suffix: :s13
       state: :b
+    - suffix: :s11
+      state: :b
     # Transitions to state C
-    - suffix: :s9
-      state: :c
     - suffix: :s16
+      state: :c
+    - suffix: :s9
       state: :c
     # Transitions to state D
     - suffix: :s18
@@ -22,21 +22,21 @@ a:
     - suffix: :s17
       state: :e
     # Transitions to state F
-    - suffix: :s12
-      state: :f
     - suffix: :s14
+      state: :f
+    - suffix: :s12
       state: :f
     # Transitions to state G
     - suffix: :s15
       state: :g
     # Transitions to state H
-    - suffix: :s2
-      state: :h
     - suffix: :s3
       state: :h
-    - suffix: :s4
-      state: :h
     - suffix: :s5
+      state: :h
+    - suffix: :s2
+      state: :h
+    - suffix: :s4
       state: :h
     - suffix: :s6
       state: :h
@@ -55,13 +55,13 @@ a:
 b:
   transitions:
     # Transitions to state H
-    - suffix: :s2
-      state: :h
     - suffix: :s3
       state: :h
-    - suffix: :s4
-      state: :h
     - suffix: :s5
+      state: :h
+    - suffix: :s2
+      state: :h
+    - suffix: :s4
       state: :h
     # Transitions to state L
     - suffix: :s1
@@ -97,13 +97,13 @@ e:
     - suffix: :s18
       state: :d
     # Transitions to state H
-    - suffix: :s2
-      state: :h
     - suffix: :s3
       state: :h
-    - suffix: :s4
-      state: :h
     - suffix: :s5
+      state: :h
+    - suffix: :s2
+      state: :h
+    - suffix: :s4
       state: :h
     - suffix: :s6
       state: :h
