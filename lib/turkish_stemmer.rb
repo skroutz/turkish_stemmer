@@ -29,10 +29,15 @@ module TurkishStemmer
   FRONT_VOWELS  = "eiöü"
   BACK_VOWELS   = "ıuao"
 
-  NOMINAL_VERB_STATES   = YAML.load_file("config/nominal_verb_states.yml").
-                               symbolize_keys!
-  NOMINAL_VERB_SUFFIXES = YAML.load_file("config/nominal_verb_suffixes.yml").
-                               symbolize_keys!
+  def load_states_or_suffixes(file)
+    YAML.load_file(file).symbolize_keys
+  end
+
+  NOMINAL_VERB_STATES   = load_states_or_suffixes("config/nominal_verb_states.yml")
+  NOMINAL_VERB_SUFFIXES = load_states_or_suffixes("config/nominal_verb_suffixes.yml")
+
+  NOUN_STATES   = load_states_or_suffixes("config/noun_states.yml")
+  NOUN_SUFFIXES = load_states_or_suffixes("config/noun_suffixes.yml")
 
   # Counts syllabes of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
