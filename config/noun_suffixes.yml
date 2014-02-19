@@ -104,7 +104,7 @@ s18:
   name: "-ki"
   regex: "ki"
   optional_letter: false
-  check_harmony: true
+  check_harmony: false
 
 s19:
   name: "-(n)cA"
