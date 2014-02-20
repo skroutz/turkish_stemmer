@@ -3,32 +3,49 @@ require "yaml"
 require "hash_extension"
 require "pry"
 
-# @todo
-#   * Generic last letter
-#   * Merging vowel
-#   * Drop pendings
-#   * Add .stem
-#   * Add states | suffixes
-#   * Exceptions (evaluation phase)
-#   * Add initial fixtures spec
-#   * Check overstemming (size)
-
 # Please note that we use only lowercase letters for all methods. One should
-# normalize input streams.
+# normalize input streams before using the `stem` method.
 module TurkishStemmer
   extend self
 
   $DEBUG = true
 
-  ALPHABET   = "abcçdefgğhıijklmnoöprsştuüvyz"
-  VOWELS     = "üiıueöao"
-  CONSONANTS = "bcçdfgğhjklmnprsştvyz"
-  ROUNDED_VOWELS    = "oöuü"
-  UNROUNDED_VOWELS  = "iıea"
-  FOLLOWING_ROUNDED_VOWELS = "aeuü"
-  FRONT_VOWELS  = "eiöü"
-  BACK_VOWELS   = "ıuao"
+  ALPHABET                  = "abcçdefgğhıijklmnoöprsştuüvyz"
+  VOWELS                    = "üiıueöao"
+  CONSONANTS                = "bcçdfgğhjklmnprsştvyz"
+  ROUNDED_VOWELS            = "oöuü"
+  UNROUNDED_VOWELS          = "iıea"
+  FOLLOWING_ROUNDED_VOWELS  = "aeuü"
+  FRONT_VOWELS              = "eiöü"
+  BACK_VOWELS               = "ıuao"
 
+  # Stems a Turkish word.
+  #
+  # Algorithm consists of 3 parts: pre-process, process and post-process. The
+  # pre-process phase is a quick lookup for words that should not be stemmed
+  # based on length, protected words list and vowel harmony. The process phase
+  # includes a nominal verb suffix and a noun suffix stripper machine. The last
+  # phase includes some additional checks and a simple stem selection decision.
+  #
+  # @param word [String] the word to stem
+  # @return [String] the stemmed word
+  def stem(word)
+    # Preprocess
+    return word if !proceed_to_stem?(word)
+
+    # Process
+    stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
+              noun_suffix_machine { nominal_word }
+            end
+
+    # Postprocess
+    stem_post_process(stems, word)
+  end
+
+  # Loads yaml file and symbolizes keys
+  #
+  # @param file [String] path to yaml file
+  # @retutn [Hash] the hash with symbols as keys
   def load_states_or_suffixes(file)
     YAML.load_file(file).symbolize_keys
   end
@@ -154,24 +171,8 @@ module TurkishStemmer
     false
   end
 
-  # Turkish stemmer
-  #
-  #
-  def stem(word)
-    # Pre-Process
-    return word if !proceed_to_stem?(word)
-
-    # Process
-    stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
-              noun_suffix_machine { nominal_word }
-            end
-
-    # Post-Process
-    stem_post_process(stems, word)
-  end
-
-  # Checks whether a word can be stemmed or not.
-  # This method checks word for nil, protected, length and harmory.
+  # Checks whether a word can be stemmed or not. This method checks candidate
+  # word against nil, protected, length and harmory.
   #
   # @param word [String] the candidate word for stemming
   # @return [Boolean]
@@ -185,7 +186,7 @@ module TurkishStemmer
     true
   end
 
-  # Post stemming process
+  # Post stemming process.
   #
   # @param stems [Array] array of candidate stems
   # @param original_word [String] the original word we want to stem
@@ -200,23 +201,13 @@ module TurkishStemmer
     stems.delete(original_word)
 
     # Transform last consonant word
-    stems.map! { |word| last_consonant(word) }
+    stems.map! { |word| last_consonant!(word) }
 
     # Sort stems
     stems.sort!
 
     # Keep first or original word
     stems.empty? ? original_word : stems.first
-  end
-
-  def nominal_verbs_suffix_machine
-    affix_morphological_stripper(yield, states: self::NOMINAL_VERB_STATES,
-      suffixes: self::NOMINAL_VERB_SUFFIXES)
-  end
-
-  def noun_suffix_machine
-    affix_morphological_stripper(yield, states: self::NOUN_STATES,
-      suffixes: self::NOUN_SUFFIXES)
   end
 
   # A simple algorithm to strip suffixes from a word based on states and
@@ -253,8 +244,9 @@ module TurkishStemmer
         if to_state[:final_state] == true
           # We have a valid transition here. It is safe to remove any pendings
           # with the same signature current pending
-          remove_pendings_like(info, pendings)
-          remove_mark_pendings(pendings)
+          # binding.pry
+          remove_pendings_like!(info, pendings)
+          remove_mark_pendings!(pendings)
 
           if to_state[:transitions].empty?
             # We are sure that this is a 100% final state
@@ -263,13 +255,13 @@ module TurkishStemmer
             pendings.unshift(*generate_pendings(info[:to_state], answer[:word], states))
           end
         else
-          mark_pendings(info, pendings)
+          mark_pendings!(info, pendings)
           pendings.unshift(*generate_pendings(info[:to_state], answer[:word],
             states, rollback: info[:rollback], mark: true))
         end
       else
         if info[:rollback] && similar_pendings(info, pendings).empty?
-          # unmark_pendings(pendings)
+          # unmark_pendings!(pendings)
           stems.push info[:rollback]
         end
       end
@@ -301,41 +293,6 @@ module TurkishStemmer
         rollback: rollback,
         mark: mark
       }
-    end
-  end
-
-  def remove_pendings_like(pending, array)
-    array.reject! do |candidate|
-      candidate[:to_state] == pending[:to_state] &&
-      candidate[:from_state] == pending[:from_state]
-    end
-  end
-
-  def mark_pendings(pending, array)
-    array.select do |candidate|
-      candidate[:to_state] == pending[:to_state] &&
-      candidate[:from_state] == pending[:from_state]
-    end.each do |candidate|
-      candidate[:mark] = true
-    end
-  end
-
-  def unmark_pendings(array)
-    array.select do |candidate|
-      candidate[:mark] == true
-    end.each { |candidate| candidate[:mark] = false }
-  end
-
-  def remove_mark_pendings(array)
-    array.reject! do |candidate|
-      candidate[:mark] == true
-    end
-  end
-
-  def similar_pendings(pending, array)
-    array.select do |candidate|
-      candidate[:to_state] == pending[:to_state] &&
-      candidate[:from_state] == pending[:from_state]
     end
   end
 
@@ -381,7 +338,11 @@ module TurkishStemmer
   # @param word [String] the examined word
   # @param letter [String] a single letter or a string armed with a regular
   #   expression
-  # @return [Array]
+  # @return [Array] the answer is returned as an array. First element is a
+  #   Boolean value and second element is the mached character.
+  # @example
+  #   self.valid_optional_letter?("test", "t")
+  #   # => [true, 't']
   def valid_optional_letter?(word, letter)
     match         = word.match(/#{letter}$/)
     answer        = true
@@ -401,7 +362,11 @@ module TurkishStemmer
     [answer, matched_char]
   end
 
-  def last_consonant(word)
+  # Transforms a word taken into account last consonant rule.
+  #
+  # @param word [String] the word to check for last consonant change
+  # @return [String] the changed word
+  def last_consonant!(word)
     consonants  = { 'b' => 'p', 'c' => 'ç', 'd' => 't', 'ğ' => 'k' }
     last_char   = word[-1]
 
@@ -412,9 +377,47 @@ module TurkishStemmer
     word
   end
 
-  def test_stem(word)
-    affix_morphological_stripper word,
-      states: self::NOMINAL_VERB_STATES,
-      suffixes: self::NOMINAL_VERB_SUFFIXES
+  private
+
+  # Helper method. This is just a shortcut.
+  def nominal_verbs_suffix_machine
+    affix_morphological_stripper(yield, states: self::NOMINAL_VERB_STATES,
+      suffixes: self::NOMINAL_VERB_SUFFIXES)
+  end
+
+  # Helper method. This is just a shortcut.
+  def noun_suffix_machine
+    affix_morphological_stripper(yield, states: self::NOUN_STATES,
+      suffixes: self::NOUN_SUFFIXES)
+  end
+
+  def remove_pendings_like!(pending, array)
+    array.reject! do |candidate|
+      candidate[:to_state] == pending[:to_state] &&
+      candidate[:from_state] == pending[:from_state]
+    end
+  end
+
+  def mark_pendings!(pending, array)
+    similar_pendings(pending, array).each do |candidate|
+      candidate[:mark] = true
+    end
+  end
+
+  def unmark_pendings!(array)
+    array.select do |candidate|
+      candidate[:mark] == true
+    end.each { |candidate| candidate[:mark] = false }
+  end
+
+  def remove_mark_pendings!(array)
+    array.reject! { |candidate| candidate[:mark] == true }
+  end
+
+  def similar_pendings(pending, array)
+    array.select do |candidate|
+      candidate[:to_state] == pending[:to_state] &&
+      candidate[:from_state] == pending[:from_state]
+    end
   end
 end

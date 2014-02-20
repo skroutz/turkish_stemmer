@@ -268,7 +268,7 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".stem", :focus do
+  describe ".stem"  do
     context "when input is single syllable" do
       it "returns the input as is" do
         expect(described_class.stem("ev")).to eq "ev"
@@ -282,13 +282,13 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".last_consonant", :focus do
+  describe ".last_consonant!"  do
     context "when last consonant is among 'b', 'c', 'd' or 'ğ'" do
       it "replaced by 'p', 'ç', 't' or 'k'" do
-        expect(described_class.last_consonant('kebab')).to eq('kebap')
-        expect(described_class.last_consonant('kebac')).to eq('kebaç')
-        expect(described_class.last_consonant('kebad')).to eq('kebat')
-        expect(described_class.last_consonant('kebağ')).to eq('kebak')
+        expect(described_class.last_consonant!('kebab')).to eq('kebap')
+        expect(described_class.last_consonant!('kebac')).to eq('kebaç')
+        expect(described_class.last_consonant!('kebad')).to eq('kebat')
+        expect(described_class.last_consonant!('kebağ')).to eq('kebak')
       end
     end
   end
@@ -363,22 +363,6 @@ describe TurkishStemmer do
           end
         end
       end
-    end
-  end
-
-  describe ".remove_pendings_like" do
-    let(:states) { described_class::NOMINAL_VERB_STATES }
-    let(:pendings) { described_class.generate_pendings(:a, "kalem", states) }
-
-    it "removes pendings with the same signature as the param" do
-      pending = pendings.shift
-
-      expect {
-        described_class.
-          remove_pendings_like(pending, pendings)
-      }.to change {
-        pendings.count
-      }.by (-3)
     end
   end
 
@@ -509,7 +493,7 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".stem_post_process", :focus do
+  describe ".stem_post_process"  do
     context "when input stream has words with last consonant replacements" do
       it "replaces last consonant" do
         expect(described_class.stem_post_process(["kebab"], "word")).to eq("kebap")
@@ -531,7 +515,7 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".proceed_to_stem?", :focus do
+  describe ".proceed_to_stem?"  do
     context "when word has 1 or less syllables" do
       it "returns false" do
         expect(described_class.proceed_to_stem?("kit")).not_to be
@@ -566,7 +550,7 @@ describe TurkishStemmer do
   context "1:1 testing with paper" do
     CSV.read("spec/support/fixtures.csv").each do |row|
       it "stems #{row[0]} correct" do
-        expect(described_class.stem(row[0])).to eq row[1]
+        expect(described_class.stem(row[0].downcase)).to eq row[1].downcase
       end
     end
   end
