@@ -161,17 +161,31 @@ module TurkishStemmer
             end
 
     # Post-Process
-    stem_post_process(stems)
+    stem_post_process(stems, word)
   end
 
-  def stem_post_process(stems)
-    stems.flatten!.uniq!
+  # Post stemming process
+  #
+  # @param stems [Array] array of candidate stems
+  # @param original_word [String] the original word we want to stem
+  # @return [String] the stemmed word or original word
+  def stem_post_process(stems, original_word)
+    stems = stems.flatten.uniq
 
     # Reject all non-syllable words
     stems.reject! { |w| count_syllables(w) == 0 }
 
+    # Reject orignal word
+    stems.delete(original_word)
+
     # Transform last consonant word
-    stems.map { |word| last_consonant(word) }
+    stems.map! { |word| last_consonant(word) }
+
+    # Sort stems
+    stems.sort!
+
+    # Keep first or original word
+    stems.empty? ? original_word : stems.first
   end
 
   def nominal_verbs_suffix_machine

@@ -512,7 +512,21 @@ describe TurkishStemmer do
   describe ".stem_post_process", :focus do
     context "when input stream has words with last consonant replacements" do
       it "replaces last consonant" do
-        expect(described_class.stem_post_process(["kebab"])).to eq(["kebap"])
+        expect(described_class.stem_post_process(["kebab"], "word")).to eq("kebap")
+      end
+    end
+
+    it "flattens and uniq results" do
+      expect(described_class.stem_post_process(["kitap",["kitap"]], "word")).to eq("kitap")
+    end
+
+    it "removes no syllables words" do
+      expect(described_class.stem_post_process(["kitap", "k"], "word")).to eq("kitap")
+    end
+
+    context "when multiple stem candidates exist" do
+      it "returns the shortest" do
+        expect(described_class.stem_post_process(["kitap", "kita", "kit"], "word")).to eq "kit"
       end
     end
   end
@@ -520,10 +534,7 @@ describe TurkishStemmer do
   context "1:1 testing with paper", :focus do
     CSV.read("spec/support/fixtures.csv").each do |row|
       it "stems #{row[0]} correct" do
-        expect(
-          described_class.
-            stem(row[0])).
-        to eq [row[1]]
+        expect(described_class.stem(row[0])).to eq row[1]
       end
     end
   end
