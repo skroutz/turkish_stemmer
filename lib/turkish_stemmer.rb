@@ -39,6 +39,12 @@ module TurkishStemmer
   NOUN_STATES   = load_states_or_suffixes("config/noun_states.yml")
   NOUN_SUFFIXES = load_states_or_suffixes("config/noun_suffixes.yml")
 
+  PROTECTED_WORDS = begin
+                      YAML.load_file("config/stemmer.yml")["protected_words"]
+                    rescue => e
+                      raise "please provide a valid config/stemmer.yml file, #{e}"
+                    end
+
   # Counts syllabes of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
   #
@@ -153,7 +159,7 @@ module TurkishStemmer
   #
   def stem(word)
     # Pre-Process
-    return word if count_syllables(word) <= 1
+    return word if !proceed_to_stem?(word)
 
     # Process
     stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
@@ -162,6 +168,16 @@ module TurkishStemmer
 
     # Post-Process
     stem_post_process(stems, word)
+  end
+
+  def proceed_to_stem?(word)
+    if word.nil? || PROTECTED_WORDS.include?(word) ||
+      count_syllables(word) <= 1 || !has_vowel_harmony?(word)
+
+      return false
+    end
+
+    true
   end
 
   # Post stemming process

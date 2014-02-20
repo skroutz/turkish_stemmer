@@ -531,7 +531,39 @@ describe TurkishStemmer do
     end
   end
 
-  context "1:1 testing with paper", :focus do
+  describe ".proceed_to_stem?", :focus do
+    context "when word has 1 or less syllables" do
+      it "returns false" do
+        expect(described_class.proceed_to_stem?("kit")).not_to be
+      end
+    end
+
+    context "when word does not have harmony" do
+      it "returns false" do
+        expect(described_class.proceed_to_stem?("taki")).not_to be
+      end
+    end
+
+    context "when word is nil" do
+      it "returns false" do
+        expect(described_class.proceed_to_stem?(nil)).not_to be
+      end
+    end
+
+    context "when word is empty" do
+      it "returns false" do
+        expect(described_class.proceed_to_stem?("")).not_to be
+      end
+    end
+
+    context "when word is among protected words" do
+      it "returns false" do
+        expect(described_class.proceed_to_stem?("soyad")).not_to be
+      end
+    end
+  end
+
+  context "1:1 testing with paper" do
     CSV.read("spec/support/fixtures.csv").each do |row|
       it "stems #{row[0]} correct" do
         expect(described_class.stem(row[0])).to eq row[1]
