@@ -170,6 +170,11 @@ module TurkishStemmer
     stem_post_process(stems, word)
   end
 
+  # Checks whether a word can be stemmed or not.
+  # This method checks word for nil, protected, length and harmory.
+  #
+  # @param word [String] the candidate word for stemming
+  # @return [Boolean]
   def proceed_to_stem?(word)
     if word.nil? || PROTECTED_WORDS.include?(word) ||
       count_syllables(word) <= 1 || !has_vowel_harmony?(word)
