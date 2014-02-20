@@ -113,16 +113,9 @@ module TurkishStemmer
     return true if vowel.nil? || vowel.empty?
     return true if candidate.nil? || candidate.empty?
 
-    if UNROUNDED_VOWELS.include?(vowel)
-      if UNROUNDED_VOWELS.include?(candidate)
-        return true
-      end
-    end
-
-    if ROUNDED_VOWELS.include?(vowel)
-      if FOLLOWING_ROUNDED_VOWELS.include?(candidate)
-        return true
-      end
+    if (UNROUNDED_VOWELS.include?(vowel) && UNROUNDED_VOWELS.include?(candidate)) ||
+       (ROUNDED_VOWELS.include?(vowel) && FOLLOWING_ROUNDED_VOWELS.include?(candidate))
+      return true
     end
 
     false
@@ -139,16 +132,9 @@ module TurkishStemmer
     return true if vowel.nil? || vowel.empty?
     return true if candidate.nil? || candidate.empty?
 
-    if FRONT_VOWELS.include?(vowel)
-      if FRONT_VOWELS.include?(candidate)
-        return true
-      end
-    end
-
-    if BACK_VOWELS.include?(vowel)
-      if BACK_VOWELS.include?(candidate)
-        return true
-      end
+    if (FRONT_VOWELS.include?(vowel) && FRONT_VOWELS.include?(candidate)) ||
+       (BACK_VOWELS.include?(vowel) && BACK_VOWELS.include?(candidate))
+      return true
     end
 
     false
