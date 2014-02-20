@@ -144,22 +144,6 @@ describe TurkishStemmer do
     end
   end
 
-  describe ".valid_last_y_consonant" do
-    context "when a word ends with 'y'" do
-      context "and the preceding letter is a vowel" do
-        it "has valid last y consonant" do
-          expect(described_class).to be_valid_last_y_consonant("litey")
-        end
-      end
-
-      context "and the preceding letter is a consonant" do
-        it "does not have a valid last y consonant" do
-          expect(described_class).not_to be_valid_last_y_consonant("lity")
-        end
-      end
-    end
-  end
-
   describe ".affix_morphological_stripper" do
     context "when states are empty" do
       it "returns the word" do

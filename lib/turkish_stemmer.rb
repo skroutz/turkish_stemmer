@@ -102,23 +102,6 @@ module TurkishStemmer
     has_roundness?(vowel, candidate) && has_frontness?(vowel, candidate)
   end
 
-  # Checks if a last 'y' consonant is formed by an affix formation or it is an
-  # exception or a loanword. This method does not check if 'y' is the last char.
-  #
-  # @param word [String] the word to check for valid last y consonant
-  # @return [Boolean]
-  # @deprecated
-  def valid_last_y_consonant?(word)
-    word_chars    = word.chars
-    previous_char = word_chars[-2]
-
-    if VOWELS.include?(previous_char)
-      true
-    else
-      false
-    end
-  end
-
   # Checks roundness vowel harmony of two vowels according to Turkish vowel
   # harmony.
   #
