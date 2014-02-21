@@ -19,6 +19,9 @@ module TurkishStemmer
   FRONT_VOWELS              = "eiöü"
   BACK_VOWELS               = "ıuao"
 
+  # Heuristic size for average Turkish stemmed word size
+  AVG_STEMMED_SIZE          = 4
+
   # Stems a Turkish word.
   #
   # Algorithm consists of 3 parts: pre-process, process and post-process. The
@@ -174,8 +177,11 @@ module TurkishStemmer
     # Transform last consonant
     stems.map! { |word| last_consonant!(word) }
 
-    # Sort stems
-    stems.sort!
+    # Sort stems by size
+    # stems.sort! do |x,y|
+    #   (x.size -  AVG_STEMMED_SIZE).abs <=> (y.size - AVG_STEMMED_SIZE).abs
+    # end
+    stems.sort! { |x,y| x.size <=> y.size }
 
     # Keep first or original word
     stems.empty? ? original_word : stems.first
