@@ -45,9 +45,11 @@ module TurkishStemmer
   # Loads yaml file and symbolizes keys
   #
   # @param file [String] path to yaml file
-  # @retutn [Hash] the hash with symbols as keys
+  # @return [Hash] the hash with symbols as keys
   def load_states_or_suffixes(file)
     YAML.load_file(file).symbolize_keys
+  rescue => e
+    raise "An error occured loading #{file}, #{e}"
   end
 
   NOMINAL_VERB_STATES   = load_states_or_suffixes("config/nominal_verb_states.yml")
@@ -59,10 +61,10 @@ module TurkishStemmer
   PROTECTED_WORDS = begin
                       YAML.load_file("config/stemmer.yml")["protected_words"]
                     rescue => e
-                      raise "please provide a valid config/stemmer.yml file, #{e}"
+                      raise "Please provide a valid config/stemmer.yml file, #{e}"
                     end
 
-  # Counts syllabes of a Turkish word. In Turkish the number of syllables is
+  # Counts syllables of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
   #
   # @param word [String] the word to count its syllables
@@ -73,15 +75,15 @@ module TurkishStemmer
 
   # Gets vowels of a word
   #
-  # @param word [String] the word to get vowels from
-  # @return [Array] of vowels
+  # @param word [String] the word to get its vowels
+  # @return [Array] array of vowels
   def vowels(word)
     word.gsub(/#{CONSONANTS.chars.join('|')}/,"").chars
   end
 
   # Checks vowel harmony of a word according to Turkish vowel harmony.
   #
-  # @param word [String] the first vowel
+  # @param word [String] the word to be checked against Turkish vowel harmony
   # @return [Boolean]
   # @see https://en.wikipedia.org/wiki/Vowel_harmony#Turkish
   def has_vowel_harmony?(word)
@@ -141,10 +143,10 @@ module TurkishStemmer
   end
 
   # Checks whether a word can be stemmed or not. This method checks candidate
-  # word against nil, protected, length and harmory.
+  # word against nil, protected, length and vowel harmory.
   #
   # @param word [String] the candidate word for stemming
-  # @return [Boolean]
+  # @return [Boolean] whether should proceed to stem or not
   def proceed_to_stem?(word)
     if word.nil? || PROTECTED_WORDS.include?(word) ||
       count_syllables(word) <= 1 || !has_vowel_harmony?(word)
@@ -155,21 +157,21 @@ module TurkishStemmer
     true
   end
 
-  # Post stemming process.
+  # Post stemming process
   #
   # @param stems [Array] array of candidate stems
-  # @param original_word [String] the original word we want to stem
-  # @return [String] the stemmed word or original word
+  # @param original_word [String] the original word
+  # @return [String] the stemmed or the original word
   def stem_post_process(stems, original_word)
     stems = stems.flatten.uniq
 
     # Reject all non-syllable words
     stems.reject! { |w| count_syllables(w) == 0 }
 
-    # Reject orignal word
+    # Reject original word
     stems.delete(original_word)
 
-    # Transform last consonant word
+    # Transform last consonant
     stems.map! { |word| last_consonant!(word) }
 
     # Sort stems
@@ -241,12 +243,16 @@ module TurkishStemmer
     stems.uniq
   end
 
-  # Given a state key and a word, scans through given states record to
-  # generate valid pending transitions.
+  # Given a state key and a word, scans through given states and generate valid
+  # pending transitions.
   #
   # @param key [String] the key for states hash
   # @param word [String] the word to check
-  # @param states [Hash] the
+  # @param states [Hash] the states hash
+  # @param options [Hash] options for pendings
+  # @option options [Boolean] :mark Whether this pending is marked for deletion
+  # @option options [String] :rollback The rollback string
+  # @return [Array] array of pendings
   def generate_pendings(key, word, states, options = {})
     raise ArgumentError, "State #{key} does not exist" if (state = states[key]).nil?
     rollback = options[:rollback]
