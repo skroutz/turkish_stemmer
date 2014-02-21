@@ -166,6 +166,10 @@ module TurkishStemmer
   # @param original_word [String] the original word
   # @return [String] the stemmed or the original word
   def stem_post_process(stems, original_word)
+    if $DEBUG
+      puts "post process for #{original_word}: #{stems}"
+    end
+
     stems = stems.flatten.uniq
 
     # Reject all non-syllable words
