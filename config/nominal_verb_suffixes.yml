@@ -58,10 +58,9 @@ s10:
   optional_letter: false
   check_harmony: true
 
-
 s11:
   name: "-cAsInA"
-  regex: "casına|cesine"
+  regex: "casına|çasına|cesine|çesine"
   optional_letter: false
   check_harmony: true
 
