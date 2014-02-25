@@ -1,3 +1,4 @@
+# coding: utf-8
 require "turkish_stemmer/version"
 require "yaml"
 require "hash_extension"
