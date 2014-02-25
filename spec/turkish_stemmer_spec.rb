@@ -32,10 +32,10 @@ describe TurkishStemmer do
     end
 
     context "when an unrounded vowel is passed" do
-      let(:vowel) { described_class::UNROUNDED_VOWELS.chars.sample }
+      let(:vowel) { described_class::UNROUNDED_VOWELS.chars.to_a.sample }
 
       context "and candidate is an unrounded vowel too" do
-        let(:candidate) { described_class::UNROUNDED_VOWELS.chars.sample }
+        let(:candidate) { described_class::UNROUNDED_VOWELS.chars.to_a.sample }
 
         it "has roundness" do
           expect(described_class).to have_roundness(vowel, candidate)
@@ -43,7 +43,7 @@ describe TurkishStemmer do
       end
 
       context "and candidate is not an unrounded vowel" do
-        let(:candidate) { described_class::ROUNDED_VOWELS.chars.sample }
+        let(:candidate) { described_class::ROUNDED_VOWELS.chars.to_a.sample }
 
         it "does not have roundness" do
           expect(described_class).not_to have_roundness(vowel, candidate)
@@ -52,10 +52,10 @@ describe TurkishStemmer do
     end
 
     context "when a rounded vowel is passed" do
-      let(:vowel) { described_class::ROUNDED_VOWELS.chars.sample }
+      let(:vowel) { described_class::ROUNDED_VOWELS.chars.to_a.sample }
 
       context "and one of 'a', 'e', 'u' or 'ü' is a candidate" do
-        let(:candidate) { described_class::FOLLOWING_ROUNDED_VOWELS.chars.sample }
+        let(:candidate) { described_class::FOLLOWING_ROUNDED_VOWELS.chars.to_a.sample }
 
         it "has roundness" do
           expect(described_class).to have_roundness(vowel, candidate)
@@ -86,10 +86,10 @@ describe TurkishStemmer do
     end
 
     context "when a front vowel is passed" do
-      let(:vowel) { described_class::FRONT_VOWELS.chars.sample }
+      let(:vowel) { described_class::FRONT_VOWELS.chars.to_a.sample }
 
       context "and candidate is a front vowel" do
-        let(:candidate) { described_class::FRONT_VOWELS.chars.sample }
+        let(:candidate) { described_class::FRONT_VOWELS.chars.to_a.sample }
 
         it "has frontness" do
           expect(described_class).to have_frontness(vowel, candidate)
@@ -97,7 +97,7 @@ describe TurkishStemmer do
       end
 
       context "and candidate is a back vowel" do
-        let(:candidate) { described_class::BACK_VOWELS.chars.sample }
+        let(:candidate) { described_class::BACK_VOWELS.chars.to_a.sample }
 
         it "does not have frontness" do
           expect(described_class).not_to have_frontness(vowel, candidate)
@@ -106,10 +106,10 @@ describe TurkishStemmer do
     end
 
     context "when a back vowel is passed" do
-      let(:vowel) { described_class::BACK_VOWELS.chars.sample }
+      let(:vowel) { described_class::BACK_VOWELS.chars.to_a.sample }
 
       context "and candidate is a front vowel" do
-        let(:candidate) { described_class::FRONT_VOWELS.chars.sample }
+        let(:candidate) { described_class::FRONT_VOWELS.chars.to_a.sample }
 
         it "does not have frontness" do
           expect(described_class).not_to have_frontness(vowel, candidate)
@@ -117,7 +117,7 @@ describe TurkishStemmer do
       end
 
       context "and candidate is a back vowel" do
-        let(:candidate) { described_class::BACK_VOWELS.chars.sample }
+        let(:candidate) { described_class::BACK_VOWELS.chars.to_a.sample }
 
         it "has frontness" do
           expect(described_class).to have_frontness(vowel, candidate)

@@ -99,7 +99,7 @@ module TurkishStemmer
   # @param word [String] the word to get its vowels
   # @return [Array] array of vowels
   def vowels(word)
-    word.gsub(/#{CONSONANTS.chars.join('|')}/,"").chars
+    word.gsub(/#{CONSONANTS.chars.to_a.join('|')}/,"").chars.to_a
   end
 
   # Checks vowel harmony of a word according to Turkish vowel harmony.
