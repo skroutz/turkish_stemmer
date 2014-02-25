@@ -1,2 +1,8 @@
 protected_words:
   - soyad
+
+last_consonant_exceptions:
+  - ad
+
+vowel_harmony_exceptions:
+  - saatler

@@ -55,17 +55,34 @@ module TurkishStemmer
     raise "An error occured loading #{file}, #{e}"
   end
 
+  # Helper method for loading settings
+  #
+  # @param key [String] the key
+  def load_settings(key)
+    begin
+      YAML.load_file("config/stemmer.yml")[key]
+    rescue => e
+      raise "Please provide a valid config/stemmer.yml file, #{e}"
+    end
+  end
+
   NOMINAL_VERB_STATES   = load_states_or_suffixes("config/nominal_verb_states.yml")
   NOMINAL_VERB_SUFFIXES = load_states_or_suffixes("config/nominal_verb_suffixes.yml")
 
   NOUN_STATES   = load_states_or_suffixes("config/noun_states.yml")
   NOUN_SUFFIXES = load_states_or_suffixes("config/noun_suffixes.yml")
 
-  PROTECTED_WORDS = begin
-                      YAML.load_file("config/stemmer.yml")["protected_words"]
-                    rescue => e
-                      raise "Please provide a valid config/stemmer.yml file, #{e}"
-                    end
+  ##
+  # Load settings
+  #
+  # Protected words
+  PROTECTED_WORDS = load_settings("protected_words")
+
+  # Last consonant exceptions
+  LAST_CONSONANT_EXCEPTIONS = load_settings("last_consonant_exceptions")
+
+  # Vower harmony exceptions
+  VOWEL_HARMONY_EXCEPTIONS = load_settings("vowel_harmony_exceptions")
 
   # Counts syllables of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
@@ -151,8 +168,10 @@ module TurkishStemmer
   # @param word [String] the candidate word for stemming
   # @return [Boolean] whether should proceed to stem or not
   def proceed_to_stem?(word)
-    if word.nil? || PROTECTED_WORDS.include?(word) ||
-      count_syllables(word) <= 1 || !has_vowel_harmony?(word)
+    if word.nil? ||
+      PROTECTED_WORDS.include?(word) ||
+      count_syllables(word) <= 1 ||
+      (!has_vowel_harmony?(word) && !VOWEL_HARMONY_EXCEPTIONS.include?(word))
 
       return false
     end
@@ -287,7 +306,8 @@ module TurkishStemmer
   # @param suffix [Hash] a suffix record
   # @return [Hash] a stem answer record
   def mark_stem(word, suffix)
-    stem = (suffix[:check_harmony] && has_vowel_harmony?(word)) ||
+    stem = (suffix[:check_harmony] &&
+           (has_vowel_harmony?(word)) || VOWEL_HARMONY_EXCEPTIONS.include?(word)) ||
            !suffix[:check_harmony]
 
     suffix_applied = suffix[:regex]
@@ -352,6 +372,8 @@ module TurkishStemmer
   # @param word [String] the word to check for last consonant change
   # @return [String] the changed word
   def last_consonant!(word)
+    return word if LAST_CONSONANT_EXCEPTIONS.include?(word)
+
     consonants  = { 'b' => 'p', 'c' => 'ç', 'd' => 't', 'ğ' => 'k' }
     last_char   = word[-1]
 

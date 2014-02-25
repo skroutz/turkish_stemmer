@@ -268,11 +268,17 @@ describe TurkishStemmer do
 
   describe ".last_consonant!"  do
     context "when last consonant is among 'b', 'c', 'd' or 'ğ'" do
-      it "replaced by 'p', 'ç', 't' or 'k'" do
+      it "is replaced by 'p', 'ç', 't' or 'k'" do
         expect(described_class.last_consonant!('kebab')).to eq('kebap')
         expect(described_class.last_consonant!('kebac')).to eq('kebaç')
         expect(described_class.last_consonant!('kebad')).to eq('kebat')
         expect(described_class.last_consonant!('kebağ')).to eq('kebak')
+      end
+    end
+
+    context "when word belongs to protected words" do
+      it "does not replace last consonant" do
+        expect(described_class.last_consonant!('ad')).to eq('ad')
       end
     end
   end
@@ -292,12 +298,23 @@ describe TurkishStemmer do
         suffix[:regex] = "dan"
       end
 
-      it "does not stem a word that does not obey harmony rules" do
-        expect(
-          described_class.
-            mark_stem("kürdan", suffix)).
-        to eq({ stem: false, word: "kürdan", suffix_applied: nil })
+      context "and word does not obey harmony rules" do
+        it "does not stem a word that does not obey harmony rules" do
+          expect(described_class.mark_stem("kürdan", suffix)).to eq(
+            { stem: false, word: "kürdan", suffix_applied: nil })
+        end
+
+        context "and word belongs to exceptions" do
+          before do
+            suffix[:regex] = "ler"
+          end
+          it "stems the word" do
+            expect(described_class.mark_stem("saatler", suffix)).to eq(
+              { stem: true, word: "saat", suffix_applied: "ler" })
+          end
+        end
       end
+
     end
 
     context "when suffix has harmony check off" do
@@ -509,6 +526,12 @@ describe TurkishStemmer do
     context "when word does not have harmony" do
       it "returns false" do
         expect(described_class.proceed_to_stem?("taki")).not_to be
+      end
+
+      context "and word is an exception" do
+        it "returns true" do
+          expect(described_class.proceed_to_stem?("saatler")).to be
+        end
       end
     end
 
