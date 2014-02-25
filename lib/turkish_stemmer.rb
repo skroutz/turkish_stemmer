@@ -230,15 +230,15 @@ module TurkishStemmer
     pendings = generate_pendings(:a, word, states)
 
     while !pendings.empty? do
-      info    = pendings.shift
-      word    = info[:word]
-      suffix  = suffixes[info[:suffix]]
-      to_state = states[info[:to_state]]
+      info      = pendings.shift
+      word      = info[:word]
+      suffix    = suffixes[info[:suffix]]
+      to_state  = states[info[:to_state]]
       answer    = mark_stem(word, suffix)
 
       if answer[:stem] == true
         if $DEBUG
-          puts answer.to_s
+          puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{info} \nSuffix: #{suffix}"
         end
 
         if to_state[:final_state] == true
