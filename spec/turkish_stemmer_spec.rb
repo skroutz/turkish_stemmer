@@ -552,6 +552,13 @@ describe TurkishStemmer do
         expect(described_class.proceed_to_stem?("soyad")).not_to be
       end
     end
+
+    context "when word contains non Turkish letters" do
+      it "returns false" do
+        expect(described_class.proceed_to_stem?("τελειο")).not_to be
+        expect(described_class.proceed_to_stem?("&aa")).not_to be
+      end
+    end
   end
 
   context "1:1 testing with paper" do

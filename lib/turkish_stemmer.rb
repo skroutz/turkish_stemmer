@@ -170,7 +170,8 @@ module TurkishStemmer
     if word.nil? ||
       PROTECTED_WORDS.include?(word) ||
       count_syllables(word) <= 1 ||
-      (!has_vowel_harmony?(word) && !VOWEL_HARMONY_EXCEPTIONS.include?(word))
+      (!has_vowel_harmony?(word) && !VOWEL_HARMONY_EXCEPTIONS.include?(word)) ||
+      (word.chars.to_a.any? { |c| !ALPHABET.include?(c) })
 
       return false
     end
