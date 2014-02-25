@@ -357,9 +357,9 @@ module TurkishStemmer
       previous_char = word[-2]
 
       answer = if VOWELS.include?(matched_char)
-                 CONSONANTS.include?(previous_char)
+                 (previous_char && CONSONANTS.include?(previous_char))
                else
-                 VOWELS.include?(previous_char)
+                 (previous_char && VOWELS.include?(previous_char))
                end
     end
 
