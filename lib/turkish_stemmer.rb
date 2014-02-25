@@ -9,8 +9,6 @@ require "pry"
 module TurkishStemmer
   extend self
 
-  $DEBUG = true
-
   ALPHABET                  = "abcçdefgğhıijklmnoöprsştuüvyz"
   VOWELS                    = "üiıueöao"
   CONSONANTS                = "bcçdfgğhjklmnprsştvyz"
