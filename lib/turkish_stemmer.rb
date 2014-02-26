@@ -187,7 +187,7 @@ module TurkishStemmer
   # @param original_word [String] the original word
   # @return [String] the stemmed or the original word
   def stem_post_process(stems, original_word)
-    if $DEBUG
+    if ENV['DEBUG']
       puts "post process for #{original_word}: #{stems}"
     end
 
@@ -235,7 +235,7 @@ module TurkishStemmer
       answer    = mark_stem(word, suffix)
 
       if answer[:stem] == true
-        if $DEBUG
+        if ENV['DEBUG']
           puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{info} \nSuffix: #{suffix}"
         end
 
