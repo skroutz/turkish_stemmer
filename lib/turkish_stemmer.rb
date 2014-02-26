@@ -31,9 +31,11 @@ module TurkishStemmer
   #
   # @param word [String] the word to stem
   # @return [String] the stemmed word
-  def stem(word)
+  def stem(original_word)
     # Preprocess
-    return word if !proceed_to_stem?(word)
+    return original_word if !proceed_to_stem?(original_word)
+
+    word = original_word.dup
 
     # Process
     stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
@@ -41,7 +43,7 @@ module TurkishStemmer
             end
 
     # Postprocess
-    stem_post_process(stems, word)
+    stem_post_process(stems, original_word)
   end
 
   # Loads yaml file and symbolizes keys
