@@ -169,11 +169,10 @@ module TurkishStemmer
   # @param word [String] the candidate word for stemming
   # @return [Boolean] whether should proceed to stem or not
   def proceed_to_stem?(word)
-    if word.nil? ||
+    if word.nil? || !turkish?(word) ||
       PROTECTED_WORDS.include?(word) ||
       count_syllables(word) <= 1 ||
-      (!has_vowel_harmony?(word) && !VOWEL_HARMONY_EXCEPTIONS.include?(word)) ||
-      (word.chars.to_a.any? { |c| !ALPHABET.include?(c) })
+      (!has_vowel_harmony?(word) && !VOWEL_HARMONY_EXCEPTIONS.include?(word))
 
       return false
     end
@@ -424,5 +423,9 @@ module TurkishStemmer
       candidate[:to_state] == pending[:to_state] &&
       candidate[:from_state] == pending[:from_state]
     end
+  end
+
+  def turkish?(word)
+    !! word.match(/^[#{ALPHABET}]+$/)
   end
 end
