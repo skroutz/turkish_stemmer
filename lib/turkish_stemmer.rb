@@ -196,9 +196,6 @@ module TurkishStemmer
     # Reject all non-syllable words
     stems.reject! { |w| count_syllables(w) == 0 }
 
-    # Reject original word
-    stems.delete(original_word)
-
     # Transform last consonant
     stems.map! { |word| last_consonant!(word) }
 
