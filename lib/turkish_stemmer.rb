@@ -207,68 +207,6 @@ module TurkishStemmer
     stems.empty? ? original_word : stems.first
   end
 
-  # A simple algorithm to strip suffixes from a word based on states and
-  # transitions.
-  #
-  # @param word [String] the word to strip affixes from
-  # @param options [Hash] options for the algorithm
-  # @option options [Hash] :states The states and valid transitions
-  # @option options [Hash] :suffixes The suffixes with their rules
-  # @return [Array] all possible stem versions
-  def affix_morphological_stripper(word, options = {})
-    states   = options[:states]   || {}
-    suffixes = options[:suffixes] || {}
-
-    return [word] if states.nil?   || states.empty?
-    return [word] if suffixes.nil? || suffixes.empty?
-
-    stems    = []
-    # Init first state pending transitions
-    pendings = generate_pendings(:a, word, states)
-
-    while !pendings.empty? do
-      info      = pendings.shift
-      word      = info[:word]
-      suffix    = suffixes[info[:suffix]]
-      to_state  = states[info[:to_state]]
-      answer    = mark_stem(word, suffix)
-
-      if answer[:stem] == true
-        if ENV['DEBUG']
-          puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{info} \nSuffix: #{suffix}"
-        end
-
-        if to_state[:final_state] == true
-          # We have a valid transition here. It is safe to remove any pendings
-          # with the same signature current pending
-          # binding.pry
-          remove_pendings_like!(info, pendings)
-          remove_mark_pendings!(pendings)
-
-          if to_state[:transitions].empty?
-            # We are sure that this is a 100% final state
-            stems.push answer[:word]
-          else
-            pendings.unshift(*generate_pendings(info[:to_state], answer[:word], states))
-          end
-        else
-          mark_pendings!(info, pendings)
-          pendings.unshift(*generate_pendings(info[:to_state], answer[:word],
-            states, rollback: info[:rollback], mark: true))
-        end
-      else
-        if info[:rollback] && similar_pendings(info, pendings).empty?
-          # unmark_pendings!(pendings)
-          stems.push info[:rollback]
-        end
-      end
-    end
-
-    return [word] if pendings.empty? && stems.empty?
-
-    stems.uniq
-  end
-
   # Given a state key and a word, scans through given states and generate valid
   # pending transitions.
   #
@@ -381,7 +319,7 @@ module TurkishStemmer
     word
   end
 
-  private
+  protected
 
   # Helper method. This is just a shortcut.
   def nominal_verbs_suffix_machine
@@ -394,6 +332,70 @@ module TurkishStemmer
     affix_morphological_stripper(yield, states: self::NOUN_STATES,
       suffixes: self::NOUN_SUFFIXES)
   end
+
+  # A simple algorithm to strip suffixes from a word based on states and
+  # transitions.
+  #
+  # @param word [String] the word to strip affixes from
+  # @param options [Hash] options for the algorithm
+  # @option options [Hash] :states The states and valid transitions
+  # @option options [Hash] :suffixes The suffixes with their rules
+  # @return [Array] all possible stem versions
+  def affix_morphological_stripper(word, options = {})
+    states   = options[:states]   || {}
+    suffixes = options[:suffixes] || {}
+
+    return [word] if states.nil?   || states.empty?
+    return [word] if suffixes.nil? || suffixes.empty?
+
+    stems    = []
+    # Init first state pending transitions
+    pendings = generate_pendings(:a, word, states)
+
+    while !pendings.empty? do
+      info      = pendings.shift
+      word      = info[:word]
+      suffix    = suffixes[info[:suffix]]
+      to_state  = states[info[:to_state]]
+      answer    = mark_stem(word, suffix)
+
+      if answer[:stem] == true
+        if ENV['DEBUG']
+          puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{info} \nSuffix: #{suffix}"
+        end
+
+        if to_state[:final_state] == true
+          # We have a valid transition here. It is safe to remove any pendings
+          # with the same signature current pending
+          # binding.pry
+          remove_pendings_like!(info, pendings)
+          remove_mark_pendings!(pendings)
+
+          if to_state[:transitions].empty?
+            # We are sure that this is a 100% final state
+            stems.push answer[:word]
+          else
+            pendings.unshift(*generate_pendings(info[:to_state], answer[:word], states))
+          end
+        else
+          mark_pendings!(info, pendings)
+          pendings.unshift(*generate_pendings(info[:to_state], answer[:word],
+            states, rollback: info[:rollback], mark: true))
+        end
+      else
+        if info[:rollback] && similar_pendings(info, pendings).empty?
+          # unmark_pendings!(pendings)
+          stems.push info[:rollback]
+        end
+      end
+    end
+
+    return [word] if pendings.empty? && stems.empty?
+
+    stems.uniq
+  end
+
+  private
 
   def remove_pendings_like!(pending, array)
     array.reject! do |candidate|
