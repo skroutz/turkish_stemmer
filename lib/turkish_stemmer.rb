@@ -206,7 +206,6 @@ module TurkishStemmer
     stems.sort! do |x,y|
       (x.size -  AVG_STEMMED_SIZE).abs <=> (y.size - AVG_STEMMED_SIZE).abs
     end
-    # stems.sort! { |x,y| x.size <=> y.size }
 
     # Keep first or original word
     stems.empty? ? original_word : stems.first
