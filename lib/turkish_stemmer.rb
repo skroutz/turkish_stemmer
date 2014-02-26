@@ -241,7 +241,8 @@ module TurkishStemmer
   # @param suffix [Hash] a suffix record
   # @return [Hash] a stem answer record
   def mark_stem(word, suffix)
-    stem = (suffix[:check_harmony] &&
+    stem = !PROTECTED_WORDS.include?(word) &&
+           (suffix[:check_harmony] &&
            (has_vowel_harmony?(word)) || VOWEL_HARMONY_EXCEPTIONS.include?(word)) ||
            !suffix[:check_harmony]
 
