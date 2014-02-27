@@ -9,7 +9,7 @@ require "pry"
 module TurkishStemmer
   extend self
 
-  ALPHABET                  = "abcçdefgğhıijklmnoöprsştuüvyz"
+
   VOWELS                    = "üiıueöao"
   CONSONANTS                = "bcçdfgğhjklmnprsştvyz"
   ROUNDED_VOWELS            = "oöuü"
@@ -20,6 +20,9 @@ module TurkishStemmer
 
   # Heuristic size for average Turkish stemmed word size
   AVG_STEMMED_SIZE          = 4
+
+  # Regular expression that checks if the word contains only turkish characters
+  ALPHABET = Regexp.new("^[abcçdefgğhıijklmnoöprsştuüvyz]+$").freeze
 
   # Stems a Turkish word.
   #
@@ -429,6 +432,7 @@ module TurkishStemmer
   end
 
   def turkish?(word)
-    !! word.match(/^[#{ALPHABET}]+$/)
+    !! word.match(ALPHABET)
   end
+
 end
