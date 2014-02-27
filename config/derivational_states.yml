@@ -1,0 +1,10 @@
+a:
+  transitions:
+    - suffix: :s1
+      state:  :b
+
+  final_state: false
+
+b:
+  transitions: []
+  final_state: true

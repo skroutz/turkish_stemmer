@@ -42,7 +42,9 @@ module TurkishStemmer
 
     # Process
     stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
-              noun_suffix_machine { nominal_word }
+              noun_suffix_machine { nominal_word }.map do |noun_word|
+                derivational_suffix_machine { noun_word }
+              end
             end
 
     # Postprocess
@@ -75,6 +77,9 @@ module TurkishStemmer
 
   NOUN_STATES   = load_states_or_suffixes("config/noun_states.yml")
   NOUN_SUFFIXES = load_states_or_suffixes("config/noun_suffixes.yml")
+
+  DERIVATIONAL_STATES = load_states_or_suffixes("config/derivational_states.yml")
+  DERIVATIONAL_SUFFIXES = load_states_or_suffixes("config/derivational_suffixes.yml")
 
   ##
   # Load settings
@@ -335,6 +340,12 @@ module TurkishStemmer
   def noun_suffix_machine
     affix_morphological_stripper(yield, states: self::NOUN_STATES,
       suffixes: self::NOUN_SUFFIXES)
+  end
+
+  # Helper method
+  def derivational_suffix_machine
+    affix_morphological_stripper(yield, states: self::DERIVATIONAL_STATES,
+      suffixes: self::DERIVATIONAL_SUFFIXES)
   end
 
   # A simple algorithm to strip suffixes from a word based on states and

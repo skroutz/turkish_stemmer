@@ -1,0 +1,6 @@
+s1:
+  name: "-lU"
+  regex: "lı|li|lu|lü"
+  optional_letter: false
+  check_harmony: true
+
