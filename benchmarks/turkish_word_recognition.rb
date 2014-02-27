@@ -1,3 +1,4 @@
+# coding : utf-8
 require 'benchmark'
 require 'turkish_stemmer'
 
