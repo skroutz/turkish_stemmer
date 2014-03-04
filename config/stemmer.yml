@@ -1,5 +1,6 @@
 protected_words:
   - soyad
+  - kedi
 
 last_consonant_exceptions:
   - ad
