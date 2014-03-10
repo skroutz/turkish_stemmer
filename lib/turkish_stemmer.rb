@@ -102,7 +102,7 @@ module TurkishStemmer
     vowels(word).size
   end
 
-  # Gets vowels of a word
+  # Gets the vowels of a word
   #
   # @param word [String] the word to get its vowels
   # @return [Array] array of vowels
