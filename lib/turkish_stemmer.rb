@@ -328,8 +328,6 @@ module TurkishStemmer
     word
   end
 
-  protected
-
   # Helper method. This is just a shortcut.
   def nominal_verbs_suffix_machine
     affix_morphological_stripper(yield, states: self::NOMINAL_VERB_STATES,
