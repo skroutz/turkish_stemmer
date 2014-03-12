@@ -190,9 +190,9 @@ module TurkishStemmer
 
   # Post stemming process
   #
-  # @param stems [Array] array of candidate stems
-  # @param original_word [String] the original word
-  # @return [String] the stemmed or the original word
+  # @param   stems          [Array]   array of candidate stems
+  # @param   original_word  [String]  the original word
+  # @return                 [String]  the stemmed or the original word
   def stem_post_process(stems, original_word)
     if ENV['DEBUG']
       puts "post process for #{original_word}: #{stems}"
@@ -349,11 +349,11 @@ module TurkishStemmer
   # A simple algorithm to strip suffixes from a word based on states and
   # transitions.
   #
-  # @param word [String] the word to strip affixes from
-  # @param options [Hash] options for the algorithm
-  # @option options [Hash] :states The states and valid transitions
-  # @option options [Hash] :suffixes The suffixes with their rules
-  # @return [Array] all possible stem versions
+  # @param  word    [String]  the word to strip affixes from
+  # @param  options [Hash]    options for the algorithm
+  # @option options [Hash]    :states The states and valid transitions
+  # @option options [Hash]    :suffixes The suffixes with their rules
+  # @return         [Array]   all possible stem versions
   def affix_morphological_stripper(word, options = {})
     states   = options[:states]   || {}
     suffixes = options[:suffixes] || {}
