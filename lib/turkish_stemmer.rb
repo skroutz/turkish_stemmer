@@ -56,7 +56,9 @@ module TurkishStemmer
   # @param file [String] path to yaml file
   # @return [Hash] the hash with symbols as keys
   def load_states_or_suffixes(file)
-    YAML.load_file(file).symbolize_keys
+    config_path = File.expand_path("../../#{file}", __FILE__)
+
+    YAML.load_file(config_path).symbolize_keys
   rescue => e
     raise "An error occured loading #{file}, #{e}"
   end
@@ -65,8 +67,10 @@ module TurkishStemmer
   #
   # @param key [String] the key
   def load_settings(key)
+    config_path = File.expand_path("../../config/stemmer.yml", __FILE__)
+
     begin
-      YAML.load_file("config/stemmer.yml")[key]
+      YAML.load_file(config_path)[key]
     rescue => e
       raise "Please provide a valid config/stemmer.yml file, #{e}"
     end
