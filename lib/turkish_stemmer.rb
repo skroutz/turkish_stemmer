@@ -2,13 +2,11 @@
 require "turkish_stemmer/version"
 require "yaml"
 require "hash_extension"
-require "pry"
 
 # Please note that we use only lowercase letters for all methods. One should
 # normalize input streams before using the `stem` method.
 module TurkishStemmer
   extend self
-
 
   VOWELS                    = "üiıueöao"
   CONSONANTS                = "bcçdfgğhjklmnprsştvyz"
@@ -370,6 +368,7 @@ module TurkishStemmer
     pendings = generate_pendings(:a, word, states)
 
     while !pendings.empty? do
+
       info      = pendings.shift
       word      = info[:word]
       suffix    = suffixes[info[:suffix]]
@@ -384,7 +383,6 @@ module TurkishStemmer
         if to_state[:final_state] == true
           # We have a valid transition here. It is safe to remove any pendings
           # with the same signature current pending
-          # binding.pry
           remove_pendings_like!(info, pendings)
           remove_mark_pendings!(pendings)
 

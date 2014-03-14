@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = TurkishStemmer::VERSION
   spec.authors       = ["Tasos Stathopoulos", "Giorgos Tsiftsis"]
   spec.email         = ["stathopa@skroutz.gr", "giorgos.tsiftsis@skroutz.gr"]
-  spec.summary       = %q{A simple turkish stemmer}
-  spec.description   = %q{A simple turkish stemmer}
+  spec.summary       = %q{A simple Turkish stemmer}
+  spec.description   = %q{A simple Turkish stemmer}
   spec.homepage      = "https://gitlab.skroutz.gr/turkish_stemmer"
   spec.license       = "MIT"
 
