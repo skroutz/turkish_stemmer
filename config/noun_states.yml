@@ -121,12 +121,12 @@ f:
     # Transitions to state D
     - suffix: :s18
       state: :d
-    # Transitions to state H
-    - suffix: :s6
-      state: :h
     # Transitions to state K
     - suffix: :s7
       state: :k
+    # Transitions to state H
+    - suffix: :s6
+      state: :h
 
   final_state: false
 
