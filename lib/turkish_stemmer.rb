@@ -202,6 +202,9 @@ module TurkishStemmer
 
     stems = stems.flatten.uniq
 
+    # Reject original word
+    stems.reject! { |w| w == original_word }
+
     # Reject all non-syllable words
     stems.reject! { |w| count_syllables(w) == 0 }
 
