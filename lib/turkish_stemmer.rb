@@ -210,7 +210,11 @@ module TurkishStemmer
 
     # Sort stems by size
     stems.sort! do |x,y|
-      (x.size -  AVG_STEMMED_SIZE).abs <=> (y.size - AVG_STEMMED_SIZE).abs
+      if (x.size - AVG_STEMMED_SIZE).abs == (y.size - AVG_STEMMED_SIZE).abs
+        x.size <=> y.size
+      else
+        (x.size - AVG_STEMMED_SIZE).abs <=>  (y.size - AVG_STEMMED_SIZE).abs
+      end
     end
 
     # Keep first or original word
@@ -390,6 +394,7 @@ module TurkishStemmer
             # We are sure that this is a 100% final state
             stems.push answer[:word]
           else
+            stems.push answer[:word]
             pendings.unshift(*generate_pendings(info[:to_state], answer[:word], states))
           end
         else
