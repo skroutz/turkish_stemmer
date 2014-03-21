@@ -39,11 +39,10 @@ module TurkishStemmer
     word = original_word.dup
 
     # Process
-    stems = nominal_verbs_suffix_machine { word }.map do |nominal_word|
-              noun_suffix_machine { nominal_word }.map do |noun_word|
-                derivational_suffix_machine { noun_word }
-              end
-            end
+    stems = []
+    stems << nominal_verbs_suffix_machine { word }
+    stems << stems.flatten.map { |word| noun_suffix_machine { word }}
+    stems << stems.flatten.map { |word| derivational_suffix_machine { word }}
 
     # Postprocess
     stem_post_process(stems, original_word)
