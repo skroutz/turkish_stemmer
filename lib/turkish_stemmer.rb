@@ -372,22 +372,21 @@ module TurkishStemmer
     pendings = generate_pendings(:a, word, states)
 
     while !pendings.empty? do
-
-      info      = pendings.shift
-      word      = info[:word]
-      suffix    = suffixes[info[:suffix]]
-      to_state  = states[info[:to_state]]
-      answer    = mark_stem(word, suffix)
+      transition = pendings.shift
+      word       = transition[:word]
+      suffix     = suffixes[transition[:suffix]]
+      to_state   = states[transition[:to_state]]
+      answer     = mark_stem(word, suffix)
 
       if answer[:stem] == true
         if ENV['DEBUG']
-          puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{info} \nSuffix: #{suffix}"
+          puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{transition} \nSuffix: #{suffix}"
         end
 
         if to_state[:final_state] == true
           # We have a valid transition here. It is safe to remove any pendings
           # with the same signature current pending
-          remove_pendings_like!(info, pendings)
+          remove_pendings_like!(transition, pendings)
           remove_mark_pendings!(pendings)
 
           if to_state[:transitions].empty?
@@ -395,17 +394,16 @@ module TurkishStemmer
             stems.push answer[:word]
           else
             stems.push answer[:word]
-            pendings.unshift(*generate_pendings(info[:to_state], answer[:word], states))
+            pendings.unshift(*generate_pendings(transition[:to_state], answer[:word], states))
           end
         else
-          mark_pendings!(info, pendings)
-          pendings.unshift(*generate_pendings(info[:to_state], answer[:word],
-            states, rollback: info[:rollback], mark: true))
+          mark_pendings!(transition, pendings)
+          pendings.unshift(*generate_pendings(transition[:to_state], answer[:word],
+            states, rollback: transition[:rollback], mark: true))
         end
       else
-        if info[:rollback] && similar_pendings(info, pendings).empty?
-          # unmark_pendings!(pendings)
-          stems.push info[:rollback]
+        if transition[:rollback] && similar_pendings(transition, pendings).empty?
+          stems.push transition[:rollback]
         end
       end
     end
