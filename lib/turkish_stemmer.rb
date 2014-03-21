@@ -257,7 +257,7 @@ module TurkishStemmer
   def mark_stem(word, suffix)
     stem = !PROTECTED_WORDS.include?(word) &&
            (suffix[:check_harmony] &&
-           (has_vowel_harmony?(word)) || VOWEL_HARMONY_EXCEPTIONS.include?(word)) ||
+           (has_vowel_harmony?(word) || VOWEL_HARMONY_EXCEPTIONS.include?(word))) ||
            !suffix[:check_harmony]
 
     suffix_applied = suffix[:regex]
