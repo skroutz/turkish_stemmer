@@ -302,7 +302,7 @@ module TurkishStemmer
   #   self.valid_optional_letter?("test", "t")
   #   # => [true, 't']
   def valid_optional_letter?(word, letter)
-    match         = word.match(/#{letter}$/)
+    match         = word.match(/(#{letter})$/)
     answer        = true
     matched_char  = nil
 
