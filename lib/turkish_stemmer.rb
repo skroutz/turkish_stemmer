@@ -428,12 +428,6 @@ module TurkishStemmer
     end
   end
 
-  def unmark_pendings!(array)
-    array.select do |candidate|
-      candidate[:mark] == true
-    end.each { |candidate| candidate[:mark] = false }
-  end
-
   def remove_mark_pendings!(array)
     array.reject! { |candidate| candidate[:mark] == true }
   end
