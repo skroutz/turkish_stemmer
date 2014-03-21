@@ -35,8 +35,8 @@ s6:
   check_harmony: true
 
 s7:
-  name: "-lArl"
-  regex: "larl|lerl"
+  name: "-lArI"
+  regex: "ları|leri"
   optional_letter: false
   check_harmony: true
 
