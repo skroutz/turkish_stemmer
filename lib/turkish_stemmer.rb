@@ -401,21 +401,16 @@ module TurkishStemmer
           remove_pendings_like!(transition, pendings)
           remove_mark_pendings!(pendings)
 
-          if to_state[:transitions].empty?
-            # We are sure that this is a 100% final state
-            stems.push answer[:word]
-          else
-            stems.push answer[:word]
+          stems.push answer[:word]
+
+          unless to_state[:transitions].empty?
             pendings.unshift(*generate_pendings(transition[:to_state], answer[:word], states))
           end
+
         else
           mark_pendings!(transition, pendings)
           pendings.unshift(*generate_pendings(transition[:to_state], answer[:word],
             states, rollback: transition[:rollback], mark: true))
-        end
-      else
-        if transition[:rollback] && similar_pendings(transition, pendings).empty?
-          stems.push transition[:rollback]
         end
       end
     end
