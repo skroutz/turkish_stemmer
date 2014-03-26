@@ -514,6 +514,13 @@ describe TurkishStemmer do
         pending("fix this")
         expect(described_class.stem_post_process(["kitap", "kita", "kit"], "word")).to eq "kit"
       end
+
+      context "and word belongs to selection list" do
+        it "returns this word" do
+          expect(described_class.stem_post_process(
+            ["su", "suy", "suyu"], "suyu")).to eq "su"
+        end
+      end
     end
   end
 

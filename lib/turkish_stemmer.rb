@@ -94,7 +94,10 @@ module TurkishStemmer
   LAST_CONSONANT_EXCEPTIONS = load_settings("last_consonant_exceptions")
 
   # Vower harmony exceptions
-  VOWEL_HARMONY_EXCEPTIONS = load_settings("vowel_harmony_exceptions")
+  VOWEL_HARMONY_EXCEPTIONS  = load_settings("vowel_harmony_exceptions")
+
+  # Selection list exceptions
+  SELECTION_LIST_EXCEPTIONS = load_settings("selection_list_exceptions")
 
   # Counts syllables of a Turkish word. In Turkish the number of syllables is
   # equals to the number of vowels.
@@ -202,6 +205,11 @@ module TurkishStemmer
     end
 
     stems = stems.flatten.uniq
+
+    # Check selection list exceptions
+    if !(exception = (stems & SELECTION_LIST_EXCEPTIONS)).empty?
+      return exception.first
+    end
 
     # Reject original word
     stems.reject! { |w| w == original_word }

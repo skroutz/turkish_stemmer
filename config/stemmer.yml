@@ -3,10 +3,18 @@ protected_words:
   - adana
   - soyad
   - kedi
+  - su
 
 last_consonant_exceptions:
   - ad
+  - arab
+  - ked
 
 vowel_harmony_exceptions:
   - saatler
   - alkoller
+
+selection_list_exceptions:
+  - su
+  - ev
+  - soyad
