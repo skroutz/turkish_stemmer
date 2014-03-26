@@ -726,10 +726,10 @@ aqw,aqw
 ar,ar
 ara,ar
 arab,arab
-araba,arap
+araba,arab
 arabaci,arabaci
 arabakari,arabakari
-arabalar,arap
+arabalar,arab
 arabalari,arabalari
 arabaları,araba
 arabalasi,arabalasi
@@ -5144,7 +5144,7 @@ evkumagazalari,evkumagazalari
 evkur,evkur
 evkurda,evkur
 evler,ev
-evleri,evler
+evleri,ev
 evmanta,evman
 evmanya,evmanya
 evmu,evmu
@@ -8365,7 +8365,7 @@ ke,ke
 ked,ked
 kedi,kedi
 kediler,kedi
-kedim,ket
+kedim,ked
 kedinin,kedi
 keen,keen
 keenway,keenway
@@ -14734,7 +14734,7 @@ sugecirmeyen,sugecirmeyen
 suger,suger
 suit,suit
 suitcase,suitcase
-sulu,sul
+sulu,su
 sumela,sumela
 summer,summer
 summit,summit
@@ -14804,7 +14804,7 @@ susler,susler
 susleri,sus
 suslu,susl
 suspendu,suspendu
-susu,sus
+susu,su
 sut,sut
 suta,su
 sutu,su
@@ -14818,7 +14818,7 @@ suveran,suveran
 suveter,suveter
 suya,su
 suyika,suyika
-suyu,suy
+suyu,su
 suyun,suy
 suyıka,suyık
 suzgeci,suzgeç
