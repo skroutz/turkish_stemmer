@@ -41,8 +41,10 @@ module TurkishStemmer
     # Process
     stems = []
     stems << nominal_verbs_suffix_machine { word }
+    stems << original_word
     stems.flatten!.uniq!
     stems << stems.map { |word| noun_suffix_machine { word }}
+    stems << original_word
     stems.flatten!.uniq!
     stems << stems.map { |word| derivational_suffix_machine { word }}
 
