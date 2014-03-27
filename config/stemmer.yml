@@ -2,8 +2,12 @@ protected_words:
   - abiye
   - adana
   - soyad
+  - kayısı
   - kedi
   - su
+  - yıldız
+  - zayıflama
+  - zemin
 
 last_consonant_exceptions:
   - ad
@@ -11,8 +15,9 @@ last_consonant_exceptions:
   - ked
 
 vowel_harmony_exceptions:
-  - saatler
   - alkoller
+  - saatler
+  - tersyüz
 
 selection_list_exceptions:
   - su
