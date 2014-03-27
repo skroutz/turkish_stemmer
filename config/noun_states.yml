@@ -88,6 +88,9 @@ d:
     # Transitions to state E
     - suffix: :s10
       state: :e
+    # Transitions to state F
+    - suffix: :s14
+      state: :f
 
   final_state: false
 
