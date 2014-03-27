@@ -531,18 +531,6 @@ describe TurkishStemmer do
       end
     end
 
-    context "when word does not have harmony" do
-      it "returns false" do
-        expect(described_class.proceed_to_stem?("taki")).not_to be
-      end
-
-      context "and word is an exception" do
-        it "returns true" do
-          expect(described_class.proceed_to_stem?("saatler")).to be
-        end
-      end
-    end
-
     context "when word is nil" do
       it "returns false" do
         expect(described_class.proceed_to_stem?(nil)).not_to be

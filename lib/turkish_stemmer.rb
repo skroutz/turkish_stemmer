@@ -185,8 +185,7 @@ module TurkishStemmer
   def proceed_to_stem?(word)
     if word.nil? || !turkish?(word) ||
       PROTECTED_WORDS.include?(word) ||
-      count_syllables(word) <= 1 ||
-      (!has_vowel_harmony?(word) && !VOWEL_HARMONY_EXCEPTIONS.include?(word))
+      count_syllables(word) <= 1
 
       return false
     end
