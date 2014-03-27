@@ -176,7 +176,7 @@ describe TurkishStemmer do
 
       it "generates pendings for the initial state" do
         described_class.should_receive(:generate_pendings).with(:a,
-          "word", states).and_call_original
+          "word", states, suffixes).and_call_original
 
         described_class.affix_morphological_stripper("word",
           states: states, suffixes: suffixes)
@@ -222,9 +222,6 @@ describe TurkishStemmer do
             described_class.should_receive(:mark_stem).with("guzelim",
               suffixes[:s1]).and_call_original
 
-            described_class.should_receive(:mark_stem).with("guzel",
-              suffixes[:s1]).and_call_original
-
             described_class.affix_morphological_stripper("guzelim",
               states: states, suffixes: suffixes)
           end
@@ -233,15 +230,12 @@ describe TurkishStemmer do
     end
 
     context "when one suffix matches correctly with a given word" do
-      let(:unreachable_suffix) {
-        described_class::NOMINAL_VERB_SUFFIXES[:s3]
-      }
-
       it "does not compare other suffixes in the same transition" do
         described_class.
           should_receive(:mark_stem).
           with(anything, anything).
-          exactly(17).times.
+          # only for suffixes [sUnUz, nUz]
+          exactly(2).times.
           and_call_original
 
         puts described_class.
@@ -369,11 +363,12 @@ describe TurkishStemmer do
 
   describe ".generate_pendings" do
     let(:states) { described_class::NOMINAL_VERB_STATES }
+    let(:suffixes) { described_class::NOMINAL_VERB_SUFFIXES }
 
     it "raises an error if state does not exist" do
       expect {
         described_class.
-          generate_pendings(1, "test", states)
+          generate_pendings(1, "satıyorsunuz", states, suffixes)
       }.to raise_error(ArgumentError, "State #{1} does not exist")
     end
 
@@ -382,7 +377,7 @@ describe TurkishStemmer do
         expect(
           described_class.
             # :f state does not have transitions
-            generate_pendings(:f, "test", states)).
+            generate_pendings(:f, "satıyorsunuz", states, suffixes)).
         to eq []
       end
     end
@@ -391,55 +386,15 @@ describe TurkishStemmer do
       it "returns an array of hashes for each transition" do
         expect(
           described_class.
-            generate_pendings(:a, "test", states).first.keys).
-        to eq [:suffix, :to_state, :from_state, :word, :rollback, :mark]
+            generate_pendings(:a, "satıyorsunuz", states, suffixes).first.keys).
+        to eq [:suffix, :to_state, :from_state, :word, :mark]
       end
 
       it "sets :from_state key to current key state" do
         expect(
           described_class.
-            generate_pendings(:a, "test", states).first[:from_state]).
+            generate_pendings(:a, "satıyorsunuz", states, suffixes).first[:from_state]).
         to eq :a
-      end
-
-      context "when state is not final" do
-        it "sets :rollback to current word" do
-          expect(
-            described_class.
-              # :a state is not final
-              generate_pendings(:a, "test", states).first[:rollback]).
-          to eq nil
-        end
-
-        context "and rollback is passed" do
-          it "sets :rollback to passed option" do
-            expect(
-              described_class.
-                generate_pendings(:a, "test", states, rollback: "custom").
-                  first[:rollback]).
-            to eq "custom"
-          end
-        end
-      end
-
-      context "when state is final" do
-        it "sets :rollback to current word" do
-          expect(
-            described_class.
-              # :b state is final
-              generate_pendings(:b, "test", states).first[:rollback]).
-          to eq "test"
-        end
-
-        context "and rollback is passed" do
-          it "sets :rollback to passed option" do
-            expect(
-              described_class.
-                generate_pendings(:a, "test", states, rollback: "custom").
-                  first[:rollback]).
-            to eq "custom"
-          end
-        end
       end
     end
   end

@@ -238,23 +238,24 @@ module TurkishStemmer
   # @param key [String] the key for states hash
   # @param word [String] the word to check
   # @param states [Hash] the states hash
+  # @param suffixes [Hash] the suffixes hash
   # @param options [Hash] options for pendings
   # @option options [Boolean] :mark Whether this pending is marked for deletion
-  # @option options [String] :rollback The rollback string
   # @return [Array] array of pendings
-  def generate_pendings(key, word, states, options = {})
+  def generate_pendings(key, word, states, suffixes, options = {})
     raise ArgumentError, "State #{key} does not exist" if (state = states[key]).nil?
-    rollback = options[:rollback]
-    rollback ||= state[:final_state] ? word : nil
     mark = options[:mark] || false
 
-    state[:transitions].map do |transition|
+    matched_transitions = state[:transitions].select do |transition|
+      word.match(/(#{suffixes[transition[:suffix]][:regex]})$/)
+    end
+
+    matched_transitions.map do |transition|
       {
         suffix: transition[:suffix],
         to_state: transition[:state],
         from_state: key,
         word: word,
-        rollback: rollback,
         mark: mark
       }
     end
@@ -380,7 +381,7 @@ module TurkishStemmer
 
     stems    = []
     # Init first state pending transitions
-    pendings = generate_pendings(:a, word, states)
+    pendings = generate_pendings(:a, word, states, suffixes)
 
     while !pendings.empty? do
       transition = pendings.shift
@@ -403,13 +404,13 @@ module TurkishStemmer
           stems.push answer[:word]
 
           unless to_state[:transitions].empty?
-            pendings.unshift(*generate_pendings(transition[:to_state], answer[:word], states))
+            pendings.unshift(*generate_pendings(transition[:to_state], answer[:word], states, suffixes))
           end
 
         else
           mark_pendings!(transition, pendings)
           pendings.unshift(*generate_pendings(transition[:to_state], answer[:word],
-            states, rollback: transition[:rollback], mark: true))
+            states, suffixes, mark: true))
         end
       end
     end
