@@ -724,7 +724,7 @@ aquos,aquos
 aqva,aqva
 aqw,aqw
 ar,ar
-ara,ara
+ara,ar
 arab,arab
 araba,araba
 arabaci,arabaci
@@ -760,7 +760,7 @@ arasi,arasi
 arasindaki,arasindaki
 arası,ara
 arasında,ara
-arasındaki,aras
+arasındaki,ara
 arava,arav
 arayan,arayan
 arazi,arazi
@@ -7280,9 +7280,9 @@ icgiyim,icgi
 ici,iç
 icim,iç
 icin,iç
-icinde,icin
-icindeki,icin
-icindekiler,icin
+icinde,iç
+icindeki,iç
+icindekiler,iç
 iclik,iclik
 iclued,iclued
 icoat,icoat
@@ -8034,7 +8034,7 @@ kalisto,kalisto
 kaliston,kaliston
 kaliteli,kalite
 kalitelimidir,kalitel
-kalitesindeki,kalites
+kalitesindeki,kalite
 kaliteyi,kalite
 kalolufer,kalolufer
 kalori,kalori
@@ -8626,7 +8626,7 @@ kod,kod
 kodak,kodak
 koddiva,koddiva
 kodları,kot
-kodlu,kodl
+kodlu,kot
 kodu,kot
 kodu:,kodu:
 kofte,kofte
@@ -16180,8 +16180,8 @@ ucan,ucan
 ucgen,ucgen
 ucin,ucin
 uciz,uciz
-ucları,uclar
-uclu,ucl
+ucları,uç
+uclu,uç
 uclumodel,uclumodel
 ucret,ucret
 ucreti,ucre
