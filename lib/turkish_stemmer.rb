@@ -1,7 +1,7 @@
 # coding: utf-8
 require "turkish_stemmer/version"
 require "yaml"
-require "hash_extension"
+require "active_support/core_ext/hash"
 
 # Please note that we use only lowercase letters for all methods. One should
 # normalize input streams before using the `stem` method.
@@ -248,14 +248,14 @@ module TurkishStemmer
     raise ArgumentError, "State #{key} does not exist" if (state = states[key]).nil?
     mark = options[:mark] || false
 
-    matched_transitions = state[:transitions].select do |transition|
-      word.match(/(#{suffixes[transition[:suffix]][:regex]})$/)
+    matched_transitions = state["transitions"].select do |transition|
+      word.match(/(#{suffixes[transition["suffix"]]["regex"]})$/)
     end
 
     matched_transitions.map do |transition|
       {
-        suffix: transition[:suffix],
-        to_state: transition[:state],
+        suffix: transition["suffix"],
+        to_state: transition["state"],
         from_state: key,
         word: word,
         mark: mark
@@ -270,18 +270,18 @@ module TurkishStemmer
   # @return [Hash] a stem answer record
   def mark_stem(word, suffix)
     stem = !PROTECTED_WORDS.include?(word) &&
-           (suffix[:check_harmony] &&
+           (suffix["check_harmony"] &&
            (has_vowel_harmony?(word) || VOWEL_HARMONY_EXCEPTIONS.include?(word))) ||
-           !suffix[:check_harmony]
+           !suffix["check_harmony"]
 
-    suffix_applied = suffix[:regex]
+    suffix_applied = suffix["regex"]
 
     if stem && (match = word.match(/(#{suffix_applied})$/))
       new_word = word.gsub(/(#{match.to_s})$/, '')
       suffix_applied = match.to_s
 
-      if suffix[:optional_letter]
-        answer, match = valid_optional_letter?(new_word, suffix[:optional_letter])
+      if suffix["optional_letter"]
+        answer, match = valid_optional_letter?(new_word, suffix["optional_letter"])
 
         if answer && match
           new_word = new_word.chop
@@ -397,7 +397,7 @@ module TurkishStemmer
           puts "Word: #{word} \nAnswer: #{answer} \nInfo: #{transition} \nSuffix: #{suffix}"
         end
 
-        if to_state[:final_state] == true
+        if to_state["final_state"] == true
           # We have a valid transition here. It is safe to remove any pendings
           # with the same signature current pending
           remove_pendings_like!(transition, pendings)
@@ -405,7 +405,7 @@ module TurkishStemmer
 
           stems.push answer[:word]
 
-          unless to_state[:transitions].empty?
+          unless to_state["transitions"].empty?
             pendings.unshift(*generate_pendings(transition[:to_state], answer[:word], states, suffixes))
           end
 

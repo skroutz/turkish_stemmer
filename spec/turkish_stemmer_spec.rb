@@ -280,16 +280,16 @@ describe TurkishStemmer do
   describe ".mark_stem" do
     let(:suffix) do
       {
-        name: "-dir",
-        regex: "dir",
-        optional_letter: false,
-        check_harmony: true
+        "name" => "-dir",
+        "regex" => "dir",
+        "optional_letter" => false,
+        "check_harmony" => true
       }
     end
 
     context "when suffix has harmony check on" do
       before do
-        suffix[:regex] = "dan"
+        suffix["regex"] = "dan"
       end
 
       context "and word does not obey harmony rules" do
@@ -300,7 +300,7 @@ describe TurkishStemmer do
 
         context "and word belongs to exceptions" do
           before do
-            suffix[:regex] = "ler"
+            suffix["regex"] = "ler"
           end
           it "stems the word" do
             expect(described_class.mark_stem("saatler", suffix)).to eq(
@@ -313,8 +313,8 @@ describe TurkishStemmer do
 
     context "when suffix has harmony check off" do
       before do
-        suffix[:regex] = "dan"
-        suffix[:check_harmony] = false
+        suffix["regex"] = "dan"
+        suffix["check_harmony"] = false
       end
 
       it "stems a word that does not obey harmony rules" do
@@ -336,8 +336,8 @@ describe TurkishStemmer do
 
       context "when suffix has (y) as optional letter" do
         before do
-          suffix[:optional_letter] = "y|y"
-          suffix[:regex] = "um"
+          suffix["optional_letter"] = "y|y"
+          suffix["regex"] = "um"
         end
 
         context "and new word has valid last 'y' symbol" do
