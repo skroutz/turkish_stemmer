@@ -207,11 +207,6 @@ module TurkishStemmer
 
     stems = stems.flatten.uniq
 
-    # Check selection list exceptions
-    if !(exception = (stems & SELECTION_LIST_EXCEPTIONS)).empty?
-      return exception.first
-    end
-
     # Reject original word
     stems.reject! { |w| w == original_word }
 
@@ -228,6 +223,11 @@ module TurkishStemmer
       else
         (x.size - AVG_STEMMED_SIZE).abs <=>  (y.size - AVG_STEMMED_SIZE).abs
       end
+    end
+
+    # Check selection list exceptions
+    if !(exception = (stems & SELECTION_LIST_EXCEPTIONS)).empty?
+      return exception.first
     end
 
     # Keep first or original word
