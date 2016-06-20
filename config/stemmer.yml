@@ -49,6 +49,7 @@ protected_words:
   - çarşı
   - ceyiz
   - çıkış
+  - çini
   - cımbiz
   - dalga
   - damla
@@ -74,6 +75,7 @@ protected_words:
   - kadın
   - katı
   - kötü
+  - kuma
   - kumanda
   - lamba
   - lazım
@@ -103,6 +105,7 @@ protected_words:
   - pırlanta
   - raket
   - ranza
+  - salı
   - şamdan
   - şapka
   - şifre
@@ -124,6 +127,7 @@ protected_words:
   - uzatma
   - uzun
   - vana
+  - vibe
   - yağlı
   - yapma
   - yardım
