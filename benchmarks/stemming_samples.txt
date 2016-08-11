@@ -8250,6 +8250,8 @@ karuj,karuj
 karus,karus
 karusu,karu
 karyip,karyip
+karyola,karyola
+karyolası,karyola
 karys,karys
 karyus,karyus
 karı,kar
