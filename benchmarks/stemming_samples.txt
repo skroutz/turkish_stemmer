@@ -3782,12 +3782,13 @@ denge,deng
 deni,den
 deniel,deniel
 denirdokum,denirdok
-deniz,den
+deniz,deniz
 denizli,deniz
 denox,denox
 dental,dental
 dente,den
 denım,denım
+denim,denim
 denımerkek,denımerkek
 deodorant,deodorant
 deodorantmum,deodorantmum
@@ -8249,6 +8250,8 @@ karuj,karuj
 karus,karus
 karusu,karu
 karyip,karyip
+karyola,karyola
+karyolası,karyola
 karys,karys
 karyus,karyus
 karı,kar
