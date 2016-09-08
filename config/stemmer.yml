@@ -70,6 +70,7 @@ protected_words:
   - gemi
   - görüntü
   - halı
+  - havuzu
   - igne
   - ince
   - internet
@@ -85,6 +86,7 @@ protected_words:
   - kötü
   - kuma
   - kumanda
+  - koltuk
   - lamba
   - lazım
   - litre
@@ -152,6 +154,7 @@ last_consonant_exceptions:
 vowel_harmony_exceptions:
   - alkoller
   - değerın
+  - saati
   - generali
   - generale
   - projektörlar
