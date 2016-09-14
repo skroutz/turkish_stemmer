@@ -1146,7 +1146,7 @@ aybet,aybet
 aybon,aybon
 aydon,aydon
 aydın,ayt
-aydınlatma,aydınlat
+aydınlatma,aydınlatma
 aydınlatmalı,aydınlatma
 ayfan,ayfan
 ayfhone,ayfhone
@@ -11048,7 +11048,7 @@ nijeryadaki,nijerya
 nik,nik
 nikah,nikah
 nikai,nikai
-nike,nik
+nike,nike
 nikia,nikia
 nikko,nikko
 nikkon,nikkon
