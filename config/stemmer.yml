@@ -158,11 +158,13 @@ protected_words:
   - yıldız
   - zayıflama
   - zemin
+  - kurutma
 
 last_consonant_exceptions:
   - ad
   - at
   - ked
+  - led
 
 vowel_harmony_exceptions:
   - alkoller
@@ -234,3 +236,4 @@ selection_list_exceptions:
   - uygun
   - var
   - yasa
+  - led
