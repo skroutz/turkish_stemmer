@@ -40,13 +40,13 @@ module TurkishStemmer
 
     # Process
     stems = []
-    stems << nominal_verbs_suffix_machine { word }
+    stems << nominal_verbs_suffix_machine(word)
     stems << original_word
     stems.flatten!.uniq!
-    stems << stems.map { |word| noun_suffix_machine { word }}
+    stems << stems.map { |word| noun_suffix_machine(word) }
     stems << original_word
     stems.flatten!.uniq!
-    stems << stems.map { |word| derivational_suffix_machine { word }}
+    stems << stems.map { |word| derivational_suffix_machine(word) }
 
     # Postprocess
     stem_post_process(stems, original_word)
@@ -349,20 +349,20 @@ module TurkishStemmer
   end
 
   # Helper method. This is just a shortcut.
-  def nominal_verbs_suffix_machine
-    affix_morphological_stripper(yield, states: self::NOMINAL_VERB_STATES,
+  def nominal_verbs_suffix_machine(term)
+    affix_morphological_stripper(term, states: self::NOMINAL_VERB_STATES,
       suffixes: self::NOMINAL_VERB_SUFFIXES)
   end
 
   # Helper method. This is just a shortcut.
-  def noun_suffix_machine
-    affix_morphological_stripper(yield, states: self::NOUN_STATES,
+  def noun_suffix_machine(term)
+    affix_morphological_stripper(term, states: self::NOUN_STATES,
       suffixes: self::NOUN_SUFFIXES)
   end
 
   # Helper method
-  def derivational_suffix_machine
-    affix_morphological_stripper(yield, states: self::DERIVATIONAL_STATES,
+  def derivational_suffix_machine(term)
+    affix_morphological_stripper(term, states: self::DERIVATIONAL_STATES,
       suffixes: self::DERIVATIONAL_SUFFIXES)
   end
 
