@@ -159,6 +159,7 @@ protected_words:
   - zayıflama
   - zemin
   - kurutma
+  - yazı
 
 last_consonant_exceptions:
   - ad
