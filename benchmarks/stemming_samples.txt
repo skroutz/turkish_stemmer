@@ -449,8 +449,8 @@ altinkaplama,altinkapla
 altligi,altlig
 altmodeli,altmode
 altus,altus
-altı,al
-altın,al
+altı,altı
+altın,altı
 altınbasak,altınp
 altında,alt
 altınyıldız,altınyıldız
