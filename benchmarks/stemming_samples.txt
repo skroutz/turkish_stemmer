@@ -15263,6 +15263,7 @@ tekerlekler,tekerlek
 tekerlekli,tekerlek
 teki,tek
 tekin,tek
+tekken,tekken
 tekli,tekl
 teklıfler,teklıfler
 tekmik,tekmik
