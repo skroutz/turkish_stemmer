@@ -36,19 +36,16 @@ module TurkishStemmer
     # Preprocess
     return original_word if !proceed_to_stem?(original_word)
 
-    word = original_word.dup
-
     # Process
-    stems = []
-    stems << nominal_verbs_suffix_machine { word }
-    stems << original_word
-    stems.flatten!.uniq!
-    stems << stems.map { |word| noun_suffix_machine { word }}
-    stems << original_word
-    stems.flatten!.uniq!
-    stems << stems.map { |word| derivational_suffix_machine { word }}
+    # set of stem candidates
+    stems = [original_word, *nominal_verbs_suffix_machine(original_word.dup)]
+    noun_suffix_stems = stems.map(&method(:noun_suffix_machine)).flatten
+    stems.push(*noun_suffix_stems)
+    derivational_suffix_stems = stems.map(&method(:derivational_suffix_machine))
+    stems.push(*derivational_suffix_stems)
+    stems.uniq!
 
-    # Postprocess
+    # Postprocess: filter and choose among the stem candidates
     stem_post_process(stems, original_word)
   end
 
@@ -349,20 +346,20 @@ module TurkishStemmer
   end
 
   # Helper method. This is just a shortcut.
-  def nominal_verbs_suffix_machine
-    affix_morphological_stripper(yield, states: self::NOMINAL_VERB_STATES,
+  def nominal_verbs_suffix_machine(term)
+    affix_morphological_stripper(term, states: self::NOMINAL_VERB_STATES,
       suffixes: self::NOMINAL_VERB_SUFFIXES)
   end
 
   # Helper method. This is just a shortcut.
-  def noun_suffix_machine
-    affix_morphological_stripper(yield, states: self::NOUN_STATES,
+  def noun_suffix_machine(term)
+    affix_morphological_stripper(term, states: self::NOUN_STATES,
       suffixes: self::NOUN_SUFFIXES)
   end
 
   # Helper method
-  def derivational_suffix_machine
-    affix_morphological_stripper(yield, states: self::DERIVATIONAL_STATES,
+  def derivational_suffix_machine(term)
+    affix_morphological_stripper(term, states: self::DERIVATIONAL_STATES,
       suffixes: self::DERIVATIONAL_SUFFIXES)
   end
 
