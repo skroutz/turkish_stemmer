@@ -31,8 +31,9 @@ module TurkishStemmer
   # phase includes some additional checks and a simple stem selection decision.
   #
   # @param word [String] the word to stem
+  # @param depth [Integer] the call stack depth
   # @return [String] the stemmed word
-  def stem(original_word)
+  def stem(original_word, depth = 0)
     # Preprocess
     return original_word if !proceed_to_stem?(original_word)
 
@@ -46,8 +47,24 @@ module TurkishStemmer
     stems << stems.map { |word| noun_suffix_machine { word }}
     stems << original_word
     stems.flatten!.uniq!
-    stems << stems.map { |word| derivational_suffix_machine { word }}
 
+    if stems.include? word and stems.size < 2 and depth < 1
+      if word[-1] == 'u' || word[-1] == 'ü' ||
+         word[-1] == 'i' || word[-1] == 'ı'
+        if word[-1] == 'ü'
+          word[-1] = 'u'
+        elsif word[-1] == 'ı'
+          word[-1] = 'i'
+        elsif word[-1] == 'i'
+          word[-1] = 'ı'
+        elsif word[-1] == 'u'
+          word[-1] = 'ü'
+        end
+        depth += 1
+        return stem(word, depth)
+      end
+    end
+    stems << stems.map { |word| derivational_suffix_machine { word }}
     # Postprocess
     stem_post_process(stems, original_word)
   end
